@@ -1,9 +1,7 @@
 package com.example.dailytask.db
 
-import androidx.lifecycle.LiveData
-
 class TaskRepository(private val taskDao: TaskDao) {
-    val allTasks: LiveData<List<Task>> = taskDao.getAllTasks()
+    val allTasks = taskDao.getAllTasks()
 
     suspend fun insert(task: Task){
         taskDao.insert(task)

@@ -1,11 +1,11 @@
 package com.example.dailytask.db
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TaskDao {
@@ -18,7 +18,7 @@ interface TaskDao {
     @Delete
     suspend fun delete(task: Task)
 
-    @Query("SELECT * from task_table order by id ASC")
-    fun getAllTasks(): LiveData<List<Task>>
+    @Query("SELECT * FROM task_table ORDER BY id ASC")
+    fun getAllTasks(): Flow<List<Task>>
 
 }
