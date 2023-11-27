@@ -14,7 +14,7 @@ data class Task(
     @ColumnInfo(name = "content")
     var content: String?,
     @ColumnInfo(name = "date")
-    var date: LocalDateTime?,
+    var date: String?,
     @ColumnInfo(name = "username")
     var username: String?,
     @ColumnInfo(name = "status")

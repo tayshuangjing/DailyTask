@@ -3,6 +3,7 @@
     <style name="Base.Theme.DailyTask" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/blue_700</item>
     </style>
 
     <style name="Theme.DailyTask" parent="Base.Theme.DailyTask" />
