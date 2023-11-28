@@ -3,17 +3,12 @@ package com.example.dailytask.admin
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.inputmethod.InputBinding
-import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.dailytask.R
 import com.example.dailytask.databinding.ActivityMainAdminBinding
 import com.example.dailytask.db.Task
 
-class MainActivity : AppCompatActivity() {
+class AdminMainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainAdminBinding
     private lateinit var viewModel: AdminTaskViewModel
     private lateinit var adapter: AdminTaskAdapter
@@ -30,20 +25,20 @@ class MainActivity : AppCompatActivity() {
         viewModel.allTasks.observe(this){
             list -> list?.let{
                 adapter.updateList(list)
-        }
+            }
         }
     }
 
     private fun initRecyclerView() {
         binding.adminRecyclerView.setHasFixedSize(true)
         binding.adminRecyclerView.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
-        adapter = AdminTaskAdapter({selectedItem: Task -> listItemClicked(selectedItem)})
+        adapter = AdminTaskAdapter({selectedId: Task -> listItemClicked(selectedId)})
         binding.adminRecyclerView.adapter = adapter
     }
 
-    private fun listItemClicked(selectedItem: Task) {
+    private fun listItemClicked(selectedId: Task) {
         val intent = Intent(this, AdminDetailActivity::class.java)
-        intent.putExtra("selectedItem",selectedItem.id)
+        intent.putExtra("selectedId",selectedId.id)
         startActivity(intent)
     }
 }
