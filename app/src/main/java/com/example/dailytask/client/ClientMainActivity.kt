@@ -17,7 +17,7 @@ import com.example.dailytask.db.Task
 import com.example.dailytask.db.TaskDatabase
 import com.example.dailytask.db.TaskRepository
 
-class MainActivity : AppCompatActivity() {
+class ClientMainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainClientBinding
     private lateinit var taskViewModel: TaskViewModel
