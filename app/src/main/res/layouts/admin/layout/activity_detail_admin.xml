@@ -33,7 +33,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="horizontal"
         android:layout_marginTop="20dp">
 
@@ -72,8 +73,19 @@
             android:layout_height="wrap_content"
             android:text="22/2/2023"/>
 
-
     </LinearLayout>
 
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"/>
+
+    <Button
+        android:layout_marginTop="20dp"
+        android:id="@+id/btnMarked"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Mark As Completed" />
 
 </LinearLayout>
