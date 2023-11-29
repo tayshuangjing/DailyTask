@@ -33,7 +33,7 @@ class MyRecyclerViewAdapter(private val clickListener: (Task) -> Unit): Recycler
 class MyViewHolder(val binding: ListItemClientBinding): RecyclerView.ViewHolder(binding.root){
     fun bind(task: Task, clickListener: (Task) -> Unit) {
         binding.tvTitle.text = task.title
-        binding.tvDate.text = task.date
+        binding.tvDate.text = task.createDateFormat
         binding.tvName.text = task.username
         binding.listItemLayout.setOnClickListener{
             clickListener(task)

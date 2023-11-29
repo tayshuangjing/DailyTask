@@ -43,7 +43,7 @@ class AdminDetailActivity : AppCompatActivity() {
                     binding.tvTitle.text = task.title
                     binding.tvContent.text = task.content
                     binding.tvName.text = task.username
-                    binding.tvDate.text = task.date
+                    binding.tvDate.text = task.createDateFormat
                 } else {
                     Log.d("TaskDetail", "Task is null. Starting Error activity.")
                     val intent = Intent(this@AdminDetailActivity, Error::class.java)

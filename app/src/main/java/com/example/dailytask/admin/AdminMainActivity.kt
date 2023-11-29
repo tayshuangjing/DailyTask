@@ -34,12 +34,11 @@ class AdminMainActivity : AppCompatActivity() {
     }
 
     private fun displayTaskList() {
-        viewModel.getAllTasks().observe(this){
-                list ->
+        viewModel.getAllTasks().observe(this) { list ->
             Log.d("AdminMain", "List size: ${list?.size}")
-            list?.let{
-            adapter.updateList(list)
-        }
+            list?.let {
+                adapter.updateList(list)
+            }
         }
     }
 
