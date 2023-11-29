@@ -38,6 +38,18 @@ class AdminDetailActivity : AppCompatActivity() {
         val id = intent.getIntExtra("selectedId", 0)
         Log.d("TaskDetail", "Received ID: $id")
 
+//        var status = arrayOf("Completed", "Reworked", "Verified")
+//        val statusArray = ArrayAdapter(this, com.google.android.material.R.layout.support_simple_spinner_dropdown_item, status)
+//        statusArray.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+//
+//        with(binding.spinner){
+//            adapter = statusArray
+//            setSelection(0,false)
+//            onItemSelectedListener = this
+//            prompt= "Mark Status"
+//            gravity = Gravity.CENTER
+//        }
+
         lifecycleScope.launch {
             viewModel.getTaskById(id).collect { task ->
                 Log.d("TaskDetail", "Collect block executed. Task: $task")
