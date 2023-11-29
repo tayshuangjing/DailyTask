@@ -1,6 +1,5 @@
 package com.example.dailytask.client
 
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,9 +8,10 @@ import com.example.dailytask.db.Task
 import com.example.dailytask.db.TaskRepository
 import kotlinx.coroutines.launch
 
-class TaskViewModel(private val repository: TaskRepository): ViewModel() {
+class ClientTaskViewModel(private val repository: TaskRepository): ViewModel() {
 
-    val allTasks: LiveData<List<Task>> = repository.allTasks
+    private val taskList = MutableLiveData<List<Task>>()
+    val allTasks : LiveData<List<Task>> = taskList
 
     fun insert(task: Task) = viewModelScope.launch {
         repository.insert(task)

@@ -25,16 +25,6 @@ class AdminTaskViewModel(private val application: Application): ViewModel() {
     init{
         val dao = TaskDatabase.getDatabase(application).taskDao
         repository = TaskRepository(dao)
-//        allTasks = repository.allTasks.asLiveData()
-
-        taskList.value = listOf(
-            Task(1,"Phasellus", "Phasellus sit amet erat. Nulla tempus. Vivamus in felis eu sapien cursus vestibulum. Proin eu mi. Nulla ac enim.", "05-08-2023","Janice", true),
-            Task(2,"Nulla", "Duis at velit eu est congue elementum. In hac habitasse platea dictumst. Morbi vestibulum, velit id pretium iaculis, diam erat fermentum justo, nec condimentum neque sapien placerat ante. Nulla justo.", "15-01-2023","Wendy", false),
-            Task(3,"Integer non velit", "Proin at turpis a pede posuere nonummy. Integer non velit.", "26-05-2023","Venice", true),
-            Task(4,"Suspendisse accumsan tortor", "Morbi non quam nec dui luctus rutrum. Nulla tellus. In sagittis dui vel nisl. Duis ac nibh.", "27-03-2023","Sandy", false),
-            Task(5,"Sed sagittis", "Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus vestibulum sagittis sapien.", "11-07-2023","Javier", false),
-            Task(6,"Duis faucibus accumsan odio", "Morbi porttitor lorem id ligula. Suspendisse ornare consequat lectus. In est risus, auctor sed, tristique in, tempus sit amet, sem. Fusce consequat.", "14-07-2023","Sandy", false)
-        )
     }
 
     fun getTaskById(taskId: Int): Flow<Task?> {
