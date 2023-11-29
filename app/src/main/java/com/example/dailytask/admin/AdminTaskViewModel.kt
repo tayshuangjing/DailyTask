@@ -15,6 +15,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 
 class AdminTaskViewModel(private val application: Application): ViewModel() {
@@ -30,6 +32,17 @@ class AdminTaskViewModel(private val application: Application): ViewModel() {
     fun getAllTasks() = liveData {
         tasks.collect{
             emit(it)
+        }
+    }
+    fun searchTask(query:String):LiveData<List<Task>>{
+        return liveData {
+            val filteredList = repository.allTasks.first().filter { task: Task ->
+                task.title!!.contains(query,ignoreCase = true)
+//                ||task.content!!.contains(query,ignoreCase = true)
+                ||task.createDateFormat!!.contains(query,ignoreCase = true)
+                ||task.username!!.contains(query,ignoreCase = true)
+            }
+            emit(filteredList)
         }
     }
 }
