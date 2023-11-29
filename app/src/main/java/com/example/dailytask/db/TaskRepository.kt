@@ -20,6 +20,11 @@ class TaskRepository(private val taskDao: TaskDao) {
         taskDao.delete(task)
     }
 
+    suspend fun deleteTaskById(taskId: Int){
+        Log.d("TaskDao", "Querying task with ID: $taskId")
+        taskDao.deleteTaskById(taskId)
+    }
+
     fun getTaskById(taskId: Int): Flow<Task?> {
         Log.d("TaskDao", "Querying task with ID: $taskId")
         return taskDao.getTaskById(taskId).onEach { task: Task? ->

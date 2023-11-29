@@ -8,7 +8,6 @@ import android.view.Gravity
 import android.widget.ArrayAdapter
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import com.example.dailytask.R
 import com.example.dailytask.databinding.ActivityDetailAdminBinding
