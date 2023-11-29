@@ -2,6 +2,7 @@ package com.example.dailytask.db
 
 import android.util.Log
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.onEach
 
 class TaskRepository(private val taskDao: TaskDao) {
     val allTasks = taskDao.getAllTasks()
@@ -21,8 +22,8 @@ class TaskRepository(private val taskDao: TaskDao) {
 
     fun getTaskById(taskId: Int): Flow<Task?> {
         Log.d("TaskDao", "Querying task with ID: $taskId")
-        val task = taskDao.getTaskById(taskId)
+        return taskDao.getTaskById(taskId).onEach { task: Task? ->
         Log.d("TaskDao", "Task result: $task")
-        return task
+        }
     }
 }

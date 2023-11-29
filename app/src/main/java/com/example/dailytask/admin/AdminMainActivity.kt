@@ -3,6 +3,8 @@ package com.example.dailytask.admin
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dailytask.databinding.ActivityMainAdminBinding
@@ -21,19 +23,24 @@ class AdminMainActivity : AppCompatActivity() {
         ).get(AdminTaskViewModel::class.java)
 
         initRecyclerView()
-
-        viewModel.allTasks.observe(this){
-            list -> list?.let{
-                adapter.updateList(list)
-            }
-        }
     }
 
     private fun initRecyclerView() {
         binding.adminRecyclerView.setHasFixedSize(true)
         binding.adminRecyclerView.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
-        adapter = AdminTaskAdapter({selectedId: Task -> listItemClicked(selectedId)})
+        adapter = AdminTaskAdapter { selectedId: Task -> listItemClicked(selectedId) }
         binding.adminRecyclerView.adapter = adapter
+        displayTaskList()
+    }
+
+    private fun displayTaskList() {
+        viewModel.getAllTasks().observe(this){
+                list ->
+            Log.d("AdminMain", "List size: ${list?.size}")
+            list?.let{
+            adapter.updateList(list)
+        }
+        }
     }
 
     private fun listItemClicked(selectedId: Task) {
