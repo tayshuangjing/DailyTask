@@ -35,17 +35,17 @@
         android:layout_margin="20dp"
         android:elevation="@dimen/cardview_default_elevation"/>
 
-    <EditText
-        android:id="@+id/etDate"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rounded_edit_text"
-        android:ems="10"
-        android:hint="Date"
-        android:inputType="text"
-        android:layout_margin="20dp"
-        android:elevation="@dimen/cardview_default_elevation"
-        android:padding="10dp" />
+<!--    <EditText-->
+<!--        android:id="@+id/etDate"-->
+<!--        android:layout_width="300dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@drawable/rounded_edit_text"-->
+<!--        android:ems="10"-->
+<!--        android:hint="Date"-->
+<!--        android:inputType="text"-->
+<!--        android:layout_margin="20dp"-->
+<!--        android:elevation="@dimen/cardview_default_elevation"-->
+<!--        android:padding="10dp" />-->
 
     <EditText
         android:id="@+id/etName"

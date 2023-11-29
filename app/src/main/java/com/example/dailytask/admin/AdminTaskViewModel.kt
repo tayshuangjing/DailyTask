@@ -22,8 +22,6 @@ class AdminTaskViewModel(private val application: Application): ViewModel() {
     val dao = TaskDatabase.getDatabase(application).taskDao
     private var repository: TaskRepository = TaskRepository(dao)
     val tasks = repository.allTasks
-//    private val taskList = MutableLiveData<List<Task>>()
-//    val allTasks : LiveData<List<Task>> = taskList
 
     fun getTaskById(taskId: Int): Flow<Task?> {
         return repository.getTaskById(taskId)

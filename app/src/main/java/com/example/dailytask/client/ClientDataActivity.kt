@@ -8,6 +8,7 @@ import com.example.dailytask.databinding.ActivitySecondBinding
 import com.example.dailytask.db.Task
 import com.example.dailytask.db.TaskDatabase
 import com.example.dailytask.db.TaskRepository
+import java.time.LocalDateTime
 
 class ClientDataActivity : AppCompatActivity() {
 
@@ -31,12 +32,12 @@ class ClientDataActivity : AppCompatActivity() {
         binding.apply {
             val userInputTitle = etTitle.text.toString()
             val userInputContent = etContent.text.toString()
-            val userInputDate = etDate.text.toString()
+            val userInputDate = LocalDateTime.now()
             val userInputName = etName.text.toString()
             clientTaskViewModel.insert(Task(null, userInputTitle, userInputContent, userInputDate, userInputName, false))
             etTitle.text.clear()
             etContent.text.clear()
-            etDate.text.clear()
+//            etDate.text.clear()
             etName.text.clear()
         }
     }

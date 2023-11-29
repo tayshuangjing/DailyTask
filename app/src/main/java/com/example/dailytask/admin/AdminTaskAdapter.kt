@@ -65,7 +65,7 @@ class AdminTaskViewHolder(
 
     fun bind(task: Task) {
         binding.tvTitle.text = task.title
-        binding.tvDate.text = task.date
+        binding.tvDate.text = task.createDateFormat
         binding.tvName.text = task.username
     }
 }
