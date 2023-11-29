@@ -15,6 +15,7 @@ import com.example.dailytask.db.Task
 import com.example.dailytask.db.TaskDatabase
 import com.example.dailytask.db.TaskRepository
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 
 class ClientUpdateActivity : AppCompatActivity() {
 
@@ -36,7 +37,6 @@ class ClientUpdateActivity : AppCompatActivity() {
                 binding.apply {
                     etTitle.setText(task?.title)
                     etContent.setText(task?.content)
-                    etDate.setText(task?.date)
                     etName.setText(task?.username)
                 }
             }
@@ -56,12 +56,11 @@ class ClientUpdateActivity : AppCompatActivity() {
             if (!etTitle.text.isEmpty() && !etContent.text.isEmpty() && !etDate.text.isEmpty() && !etName.text.isEmpty()){
                 val userInputTitle = etTitle.text.toString()
                 val userInputContent = etContent.text.toString()
-                val userInputDate = etDate.text.toString()
                 val userInputName = etName.text.toString()
+                val userInputDate = LocalDateTime.now()
                 clientTaskViewModel.update(Task(taskId, userInputTitle, userInputContent, userInputDate, userInputName, false))
                 etTitle.text.clear()
                 etContent.text.clear()
-                etDate.text.clear()
                 etName.text.clear()
                 finish()
             } else {

@@ -9,6 +9,7 @@ import com.example.dailytask.databinding.ActivitySecondBinding
 import com.example.dailytask.db.Task
 import com.example.dailytask.db.TaskDatabase
 import com.example.dailytask.db.TaskRepository
+import java.time.LocalDateTime
 
 class ClientDataActivity : AppCompatActivity() {
 
@@ -34,15 +35,15 @@ class ClientDataActivity : AppCompatActivity() {
 
     private fun save() {
         binding.apply {
-            if (!etTitle.text.isEmpty() && !etContent.text.isEmpty() && !etDate.text.isEmpty() && !etName.text.isEmpty()){
+            if (!etTitle.text.isEmpty() && !etContent.text.isEmpty() && !etName.text.isEmpty()){
                 val userInputTitle = etTitle.text.toString()
                 val userInputContent = etContent.text.toString()
-                val userInputDate = etDate.text.toString()
+//                val userInputDate = etDate.text.toString()
                 val userInputName = etName.text.toString()
-                clientTaskViewModel.insert(Task(null, userInputTitle, userInputContent, userInputDate, userInputName, false))
+                clientTaskViewModel.insert(Task(null, userInputTitle, userInputContent, LocalDateTime.now(), userInputName, false))
                 etTitle.text.clear()
                 etContent.text.clear()
-                etDate.text.clear()
+//                etDate.text.clear()
                 etName.text.clear()
                 finish()
             } else {
