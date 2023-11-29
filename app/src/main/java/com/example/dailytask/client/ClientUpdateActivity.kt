@@ -8,8 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
-import com.example.dailytask.admin.Error
-import com.example.dailytask.databinding.ActivitySecondBinding
 import com.example.dailytask.databinding.ActivityUpdateBinding
 import com.example.dailytask.db.Task
 import com.example.dailytask.db.TaskDatabase
