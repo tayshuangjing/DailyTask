@@ -49,6 +49,8 @@ class ClientMainActivity : AppCompatActivity() {
     }
 
     private fun listItemClicked(task: Task) {
-
+        val intent = Intent(this@ClientMainActivity, ClientUpdateActivity::class.java)
+        intent.putExtra("task_id", task.id)
+        startActivity(intent)
     }
 }

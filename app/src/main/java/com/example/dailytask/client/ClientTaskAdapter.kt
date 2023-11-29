@@ -27,7 +27,6 @@ class MyRecyclerViewAdapter(private val clickListener: (Task) -> Unit): Recycler
     fun setList(tasks: List<Task>){
         tasksList.clear()
         tasksList.addAll(tasks)
-        notifyDataSetChanged()
     }
 }
 

@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import com.example.dailytask.R
 import com.example.dailytask.databinding.ActivityDetailAdminBinding
