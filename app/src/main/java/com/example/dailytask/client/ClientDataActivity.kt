@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
-import com.example.dailytask.databinding.ActivitySecondBinding
+import com.example.dailytask.databinding.ActivityDataClientBinding
 import com.example.dailytask.db.Task
 import com.example.dailytask.db.TaskDatabase
 import com.example.dailytask.db.TaskRepository
@@ -12,11 +12,11 @@ import java.time.LocalDateTime
 
 class ClientDataActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivitySecondBinding
+    private lateinit var binding: ActivityDataClientBinding
     private lateinit var clientTaskViewModel: ClientTaskViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySecondBinding.inflate(layoutInflater)
+        binding = ActivityDataClientBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val database = Room.databaseBuilder(applicationContext, TaskDatabase::class.java, "task_database").build()
