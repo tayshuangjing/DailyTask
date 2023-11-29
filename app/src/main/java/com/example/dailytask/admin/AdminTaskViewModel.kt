@@ -14,21 +14,25 @@ import com.example.dailytask.db.TaskRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.stateIn
 
 class AdminTaskViewModel(private val application: Application): ViewModel() {
 
-    private val repository: TaskRepository
-    private val taskList = MutableLiveData<List<Task>>()
-    val allTasks : LiveData<List<Task>> = taskList
-
-    init{
-        val dao = TaskDatabase.getDatabase(application).taskDao
-        repository = TaskRepository(dao)
-    }
+    val dao = TaskDatabase.getDatabase(application).taskDao
+    private var repository: TaskRepository = TaskRepository(dao)
+    val tasks = repository.allTasks
+//    private val taskList = MutableLiveData<List<Task>>()
+//    val allTasks : LiveData<List<Task>> = taskList
 
     fun getTaskById(taskId: Int): Flow<Task?> {
         return repository.getTaskById(taskId)
+    }
+
+    fun getAllTasks() = liveData {
+        tasks.collect{
+            emit(it)
+        }
     }
 }
 
