@@ -25,6 +25,9 @@
             android:name=".client.ClientMainActivity"
             android:exported="false" />
         <activity
+            android:name=".client.ClientDataActivity"
+            android:exported="false" />
+        <activity
             android:name="MainActivity"
             android:exported="true">
             <intent-filter>
