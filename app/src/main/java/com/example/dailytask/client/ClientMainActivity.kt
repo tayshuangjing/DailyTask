@@ -41,7 +41,7 @@ class ClientMainActivity : AppCompatActivity() {
         binding.clientRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         adapter = MyRecyclerViewAdapter({selectedItem: Task -> listItemClicked(selectedItem)})
         binding.clientRecyclerView.adapter = adapter
-        clientTaskViewModel.allTasks.observe(this, Observer {
+        clientTaskViewModel.getAllTasks().observe(this, Observer {
             Log.i("MyTag", it.toString())
             adapter.setList(it)
             adapter.notifyDataSetChanged()
