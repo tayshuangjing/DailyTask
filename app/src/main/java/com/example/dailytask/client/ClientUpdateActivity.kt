@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
-import com.example.dailytask.databinding.ActivityUpdateBinding
+import com.example.dailytask.databinding.ActivityUpdateClientBinding
 import com.example.dailytask.db.Task
 import com.example.dailytask.db.TaskDatabase
 import com.example.dailytask.db.TaskRepository
@@ -17,11 +17,11 @@ import java.time.LocalDateTime
 
 class ClientUpdateActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityUpdateBinding
+    private lateinit var binding: ActivityUpdateClientBinding
     private lateinit var clientTaskViewModel: ClientTaskViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityUpdateBinding.inflate(layoutInflater)
+        binding = ActivityUpdateClientBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val database = Room.databaseBuilder(applicationContext, TaskDatabase::class.java, "task_database").build()
@@ -51,7 +51,7 @@ class ClientUpdateActivity : AppCompatActivity() {
 
     private fun update(taskId: Int) {
         binding.apply {
-            if (!etTitle.text.isEmpty() && !etContent.text.isEmpty() && !etDate.text.isEmpty() && !etName.text.isEmpty()){
+            if (!etTitle.text.isEmpty() && !etContent.text.isEmpty() && !etName.text.isEmpty()){
                 val userInputTitle = etTitle.text.toString()
                 val userInputContent = etContent.text.toString()
                 val userInputName = etName.text.toString()
@@ -60,7 +60,7 @@ class ClientUpdateActivity : AppCompatActivity() {
                 etTitle.text.clear()
                 etContent.text.clear()
                 etName.text.clear()
-                finish()
+//                finish()
             } else {
                 Toast.makeText(applicationContext, "Please fill in the empty field.", Toast.LENGTH_LONG).show()
             }
@@ -69,6 +69,6 @@ class ClientUpdateActivity : AppCompatActivity() {
 
     private fun delete(taskId: Int) {
         clientTaskViewModel.deleteTaskById(taskId)
-        finish()
+//        finish()
     }
 }

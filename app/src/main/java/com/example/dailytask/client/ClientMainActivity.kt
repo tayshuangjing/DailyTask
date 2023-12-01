@@ -33,7 +33,7 @@ class ClientMainActivity : AppCompatActivity() {
         initRecyclerView()
 
         binding.btAdd.setOnClickListener {
-            startActivity(Intent(this@ClientMainActivity, ClientDataActivity::class.java))
+            startActivity(Intent(this@ClientMainActivity, ClientAddActivity::class.java))
         }
     }
 
@@ -41,11 +41,21 @@ class ClientMainActivity : AppCompatActivity() {
         binding.clientRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         adapter = MyRecyclerViewAdapter({selectedItem: Task -> listItemClicked(selectedItem)})
         binding.clientRecyclerView.adapter = adapter
+        displayTask()
+    }
+
+    private fun displayTask() {
         clientTaskViewModel.getAllTasks().observe(this, Observer {
             Log.i("MyTag", it.toString())
             adapter.setList(it)
             adapter.notifyDataSetChanged()
         })
+//        clientTaskViewModel.getAllTasks().observe(this) { list ->
+//            Log.d("AdminMain", "List size: ${list?.size}")
+//            list?.let {
+//                adapter.setList(list)
+//            }
+//        }
     }
 
     private fun listItemClicked(task: Task) {

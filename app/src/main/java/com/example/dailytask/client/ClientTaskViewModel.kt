@@ -10,6 +10,7 @@ import com.example.dailytask.db.Task
 import com.example.dailytask.db.TaskDatabase
 import com.example.dailytask.db.TaskRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 
 class ClientTaskViewModel(private val repository: TaskRepository): ViewModel() {
@@ -17,6 +18,7 @@ class ClientTaskViewModel(private val repository: TaskRepository): ViewModel() {
     val tasks = repository.allTasks
 
     fun insert(task: Task) = viewModelScope.launch {
+        Log.i("mytag", "data is inserted: $task")
         repository.insert(task)
     }
 
@@ -35,6 +37,7 @@ class ClientTaskViewModel(private val repository: TaskRepository): ViewModel() {
     fun getAllTasks() = liveData {
         tasks.collect{
             emit(it)
+            Log.i("mytag", "tasks in view model: $it")
         }
     }
 

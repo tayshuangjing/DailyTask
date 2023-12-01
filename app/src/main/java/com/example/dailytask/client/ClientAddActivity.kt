@@ -2,22 +2,23 @@ package com.example.dailytask.client
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
-import com.example.dailytask.databinding.ActivitySecondBinding
+import com.example.dailytask.databinding.ActivityAddClientBinding
 import com.example.dailytask.db.Task
 import com.example.dailytask.db.TaskDatabase
 import com.example.dailytask.db.TaskRepository
 import java.time.LocalDateTime
 
-class ClientDataActivity : AppCompatActivity() {
+class ClientAddActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivitySecondBinding
+    private lateinit var binding: ActivityAddClientBinding
     private lateinit var clientTaskViewModel: ClientTaskViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySecondBinding.inflate(layoutInflater)
+        binding = ActivityAddClientBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val database = Room.databaseBuilder(applicationContext, TaskDatabase::class.java, "task_database").build()
@@ -34,18 +35,17 @@ class ClientDataActivity : AppCompatActivity() {
     }
 
     private fun save() {
+        Log.i("mytag", "save button is clicked")
         binding.apply {
             if (!etTitle.text.isEmpty() && !etContent.text.isEmpty() && !etName.text.isEmpty()){
                 val userInputTitle = etTitle.text.toString()
                 val userInputContent = etContent.text.toString()
-//                val userInputDate = etDate.text.toString()
                 val userInputName = etName.text.toString()
                 clientTaskViewModel.insert(Task(null, userInputTitle, userInputContent, LocalDateTime.now(), userInputName, false))
                 etTitle.text.clear()
                 etContent.text.clear()
-//                etDate.text.clear()
                 etName.text.clear()
-                finish()
+//                finish()
             } else {
                 Toast.makeText(applicationContext, "Please fill in the empty field.", Toast.LENGTH_LONG).show()
             }
