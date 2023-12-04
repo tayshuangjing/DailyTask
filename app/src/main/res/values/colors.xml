@@ -9,4 +9,6 @@
     <color name="blue_200">#D0EFFF</color>
     <color name="green">#86DC3D</color>
     <color name="dark_green">#378805</color>
+    <color name="yellow_pending">#FFC107</color>
+    <color name="yellow_rework">#FF9800</color>
 </resources>

@@ -28,4 +28,6 @@ interface TaskDao {
     @Query("SELECT * FROM task_table WHERE id = :taskId")
     fun getTaskById(taskId: Int): Flow<Task?>
 
+    @Query("UPDATE task_table SET status = :newStatus WHERE id = :taskId")
+    suspend fun updateTaskStatus(taskId: Int, newStatus: String)
 }

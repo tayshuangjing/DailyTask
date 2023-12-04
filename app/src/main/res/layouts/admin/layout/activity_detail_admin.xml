@@ -77,15 +77,16 @@
 
     <Spinner
         android:id="@+id/spinner"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:padding="15dp"
         android:layout_height="wrap_content"
         android:spinnerMode="dropdown"/>
 
     <Button
-        android:layout_marginTop="20dp"
-        android:id="@+id/btnMarked"
+        android:id="@+id/btnDone"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Mark As Completed" />
+        android:text="Done"/>
 
 </LinearLayout>

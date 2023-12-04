@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 class AdminTaskViewModel(private val application: Application): ViewModel() {
 
@@ -42,6 +43,12 @@ class AdminTaskViewModel(private val application: Application): ViewModel() {
                 ||task.username!!.contains(query,ignoreCase = true)
             }
             emit(filteredList)
+        }
+    }
+
+    fun updateTaskStatus(taskId: Int, newStatus: String){
+        viewModelScope.launch {
+            repository.updateTaskStatus(taskId, newStatus)
         }
     }
 }
