@@ -31,4 +31,8 @@ class TaskRepository(private val taskDao: TaskDao) {
         Log.d("TaskDao", "Task result: $task")
         }
     }
+
+    suspend fun updateTaskStatus(taskId: Int, newStatus: String){
+        taskDao.updateTaskStatus(taskId,newStatus)
+    }
 }

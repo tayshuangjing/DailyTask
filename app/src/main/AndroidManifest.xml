@@ -25,7 +25,7 @@
             android:name=".client.ClientMainActivity"
             android:exported="false" />
         <activity
-            android:name=".client.ClientDataActivity"
+            android:name=".client.ClientAddActivity"
             android:exported="false" />
         <activity
             android:name=".client.ClientUpdateActivity"

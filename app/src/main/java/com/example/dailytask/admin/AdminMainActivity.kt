@@ -1,6 +1,7 @@
 package com.example.dailytask.admin
 
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -19,7 +20,6 @@ class AdminMainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainAdminBinding
     private lateinit var viewModel: AdminTaskViewModel
     private lateinit var adapter: AdminTaskAdapter
-    lateinit var taskList: ArrayList<Task>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainAdminBinding.inflate(layoutInflater)

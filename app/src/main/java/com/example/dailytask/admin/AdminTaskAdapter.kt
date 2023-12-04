@@ -1,5 +1,6 @@
 package com.example.dailytask.admin
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dailytask.R
+import com.example.dailytask.databinding.ActivityMainAdminBinding
 import com.example.dailytask.databinding.ListItemBinding
 import com.example.dailytask.db.Task
 
@@ -14,7 +16,6 @@ import com.example.dailytask.db.Task
 private val taskList = ArrayList<Task>()
 class AdminTaskAdapter(private val clickListener: (Task) -> Unit) :
     RecyclerView.Adapter<AdminTaskViewHolder>() {
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdminTaskViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding: ListItemBinding = ListItemBinding.inflate(layoutInflater)
@@ -61,11 +62,18 @@ class AdminTaskViewHolder(
             }
             true
         }
+
+        if(binding.tvComplete.text == "pending"){
+            binding.tvComplete.setTextColor(Color.parseColor("#FF9800"))
+        }else if(binding.tvComplete.text == "complete"){
+            binding.tvComplete.setTextColor(Color.parseColor("#FF9800"))
+        }
     }
 
     fun bind(task: Task) {
         binding.tvTitle.text = task.title
         binding.tvDate.text = task.createDateFormat
         binding.tvName.text = task.username
+        binding.tvComplete.text = task.status
     }
 }

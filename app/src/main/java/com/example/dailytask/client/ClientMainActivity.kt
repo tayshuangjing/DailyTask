@@ -33,7 +33,7 @@ class ClientMainActivity : AppCompatActivity() {
         initRecyclerView()
 
         binding.btAdd.setOnClickListener {
-            startActivity(Intent(this@ClientMainActivity, ClientDataActivity::class.java))
+            startActivity(Intent(this@ClientMainActivity, ClientAddActivity::class.java))
         }
     }
 

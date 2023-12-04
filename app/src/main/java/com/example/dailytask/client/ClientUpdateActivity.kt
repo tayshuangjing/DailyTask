@@ -51,12 +51,13 @@ class ClientUpdateActivity : AppCompatActivity() {
 
     private fun update(taskId: Int) {
         binding.apply {
-            if (!etTitle.text.isEmpty() && !etContent.text.isEmpty() && !etDate.text.isEmpty() && !etName.text.isEmpty()){
+            if (!etTitle.text.isEmpty() && !etContent.text.isEmpty() && !etName.text.isEmpty()){
                 val userInputTitle = etTitle.text.toString()
                 val userInputContent = etContent.text.toString()
                 val userInputName = etName.text.toString()
                 val userInputDate = LocalDateTime.now()
-                clientTaskViewModel.update(Task(taskId, userInputTitle, userInputContent, userInputDate, userInputName, false))
+                val status = "pending"
+                clientTaskViewModel.update(Task(taskId, userInputTitle, userInputContent, userInputDate, userInputName, status))
                 etTitle.text.clear()
                 etContent.text.clear()
                 etName.text.clear()

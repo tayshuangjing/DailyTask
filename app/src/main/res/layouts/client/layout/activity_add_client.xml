@@ -7,7 +7,7 @@
     android:background="@color/white"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context=".client.ClientDataActivity">
+    tools:context=".client.ClientAddActivity">
 
     <EditText
         android:id="@+id/etTitle"

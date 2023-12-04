@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="task_status_admin">
+        <item>Pending</item>
+        <item>Completed</item>
+        <item>Reworked</item>
+        <item>Verified</item>
+    </string-array>
+</resources>

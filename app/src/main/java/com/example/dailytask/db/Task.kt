@@ -22,7 +22,7 @@ data class Task(
     @ColumnInfo(name = "username")
     var username: String?,
     @ColumnInfo(name = "status")
-    var status: Boolean?
+    var status: String?
 ): Parcelable{
     val createDateFormat: String
         get() = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
