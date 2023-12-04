@@ -1,5 +1,6 @@
 package com.example.dailytask.client
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -41,11 +42,17 @@ class ClientAddActivity : AppCompatActivity() {
                 val userInputTitle = etTitle.text.toString()
                 val userInputContent = etContent.text.toString()
                 val userInputName = etName.text.toString()
-                clientTaskViewModel.insert(Task(null, userInputTitle, userInputContent, LocalDateTime.now(), userInputName, false))
+                val status = "Pending"
+                clientTaskViewModel.insert(Task(null, userInputTitle, userInputContent, LocalDateTime.now(), userInputName, status))
                 etTitle.text.clear()
                 etContent.text.clear()
                 etName.text.clear()
-//                finish()
+              val intent = Intent(
+                                    this@ClientAddActivity,
+                                    ClientMainActivity::class.java
+                                )
+                                startActivity(intent)
+                                finish()
             } else {
                 Toast.makeText(applicationContext, "Please fill in the empty field.", Toast.LENGTH_LONG).show()
             }
