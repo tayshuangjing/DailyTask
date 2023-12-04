@@ -1,5 +1,6 @@
 package com.example.dailytask.client
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -27,6 +28,7 @@ class MyRecyclerViewAdapter(private val clickListener: (Task) -> Unit): Recycler
     fun setList(tasks: List<Task>){
         tasksList.clear()
         tasksList.addAll(tasks)
+        Log.i("mytag", "tasks in adapter: $tasks")
     }
 }
 

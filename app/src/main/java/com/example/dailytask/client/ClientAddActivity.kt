@@ -1,12 +1,11 @@
 package com.example.dailytask.client
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
-import com.example.dailytask.admin.Error
 import com.example.dailytask.databinding.ActivityAddClientBinding
 import com.example.dailytask.db.Task
 import com.example.dailytask.db.TaskDatabase
@@ -36,19 +35,17 @@ class ClientAddActivity : AppCompatActivity() {
     }
 
     private fun save() {
+        Log.i("mytag", "save button is clicked")
         binding.apply {
             if (!etTitle.text.isEmpty() && !etContent.text.isEmpty() && !etName.text.isEmpty()){
                 val userInputTitle = etTitle.text.toString()
                 val userInputContent = etContent.text.toString()
                 val userInputName = etName.text.toString()
-                val status = "pending"
-                clientTaskViewModel.insert(Task(null, userInputTitle, userInputContent, LocalDateTime.now(), userInputName, status))
+                clientTaskViewModel.insert(Task(null, userInputTitle, userInputContent, LocalDateTime.now(), userInputName, false))
                 etTitle.text.clear()
                 etContent.text.clear()
                 etName.text.clear()
-                val intent = Intent(this@ClientAddActivity, ClientMainActivity::class.java)
-                startActivity(intent)
-                finish()
+//                finish()
             } else {
                 Toast.makeText(applicationContext, "Please fill in the empty field.", Toast.LENGTH_LONG).show()
             }
