@@ -69,5 +69,6 @@ class AdminMainActivity : AppCompatActivity() {
         val intent = Intent(this, AdminDetailActivity::class.java)
         intent.putExtra("selectedId",selectedId.id)
         startActivity(intent)
+        finish()
     }
 }

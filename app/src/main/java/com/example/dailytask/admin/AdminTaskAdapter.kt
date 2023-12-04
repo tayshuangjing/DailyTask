@@ -1,5 +1,6 @@
 package com.example.dailytask.admin
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -44,6 +45,7 @@ class AdminTaskViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     init {
+        updateColor()
         binding.cardView.setOnTouchListener { _, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
@@ -62,11 +64,27 @@ class AdminTaskViewHolder(
             }
             true
         }
+    }
 
-        if(binding.tvComplete.text == "pending"){
-            binding.tvComplete.setTextColor(Color.parseColor("#FF9800"))
-        }else if(binding.tvComplete.text == "complete"){
-            binding.tvComplete.setTextColor(Color.parseColor("#FF9800"))
+    private fun updateColor(){
+        val context = binding.root.context
+
+        when (binding.tvComplete.text) {
+            "Pending" -> {
+                binding.tvComplete.setTextColor(ContextCompat.getColor(context, R.color.yellow_pending))
+            }
+            "Completed" -> {
+                binding.tvComplete.setTextColor(ContextCompat.getColor(context, R.color.dark_green))
+            }
+            "Reworked" -> {
+                binding.tvComplete.setTextColor(ContextCompat.getColor(context, R.color.yellow_rework))
+            }
+            "Verified" -> {
+                binding.tvComplete.setTextColor(ContextCompat.getColor(context, R.color.blue_700))
+            }
+            else -> {
+                binding.tvComplete.setTextColor(ContextCompat.getColor(context, R.color.black))
+            }
         }
     }
 
@@ -75,5 +93,6 @@ class AdminTaskViewHolder(
         binding.tvDate.text = task.createDateFormat
         binding.tvName.text = task.username
         binding.tvComplete.text = task.status
+        updateColor()
     }
 }

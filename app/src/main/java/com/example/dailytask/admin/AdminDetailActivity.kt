@@ -58,7 +58,7 @@ class AdminDetailActivity : AppCompatActivity() {
 
                     ArrayAdapter.createFromResource(
                         this@AdminDetailActivity,
-                        R.array.task_status_admin,
+                        R.array.task_status,
                         android.R.layout.simple_spinner_dropdown_item
                     ).also { adapter ->
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
