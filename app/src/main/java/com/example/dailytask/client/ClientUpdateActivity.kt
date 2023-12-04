@@ -60,7 +60,9 @@ class ClientUpdateActivity : AppCompatActivity() {
                 etTitle.text.clear()
                 etContent.text.clear()
                 etName.text.clear()
-//                finish()
+                val intent = Intent(this@ClientUpdateActivity, ClientMainActivity::class.java)
+                startActivity(intent)
+                finish()
             } else {
                 Toast.makeText(applicationContext, "Please fill in the empty field.", Toast.LENGTH_LONG).show()
             }
@@ -69,6 +71,8 @@ class ClientUpdateActivity : AppCompatActivity() {
 
     private fun delete(taskId: Int) {
         clientTaskViewModel.deleteTaskById(taskId)
-//        finish()
+        val intent = Intent(this@ClientUpdateActivity, ClientMainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }

@@ -1,5 +1,6 @@
 package com.example.dailytask.client
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -45,7 +46,9 @@ class ClientAddActivity : AppCompatActivity() {
                 etTitle.text.clear()
                 etContent.text.clear()
                 etName.text.clear()
-//                finish()
+                val intent = Intent(this@ClientAddActivity, ClientMainActivity::class.java)
+                startActivity(intent)
+                finish()
             } else {
                 Toast.makeText(applicationContext, "Please fill in the empty field.", Toast.LENGTH_LONG).show()
             }
