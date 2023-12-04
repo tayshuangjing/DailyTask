@@ -56,11 +56,14 @@ class ClientUpdateActivity : AppCompatActivity() {
                 val userInputContent = etContent.text.toString()
                 val userInputName = etName.text.toString()
                 val userInputDate = LocalDateTime.now()
-                clientTaskViewModel.update(Task(taskId, userInputTitle, userInputContent, userInputDate, userInputName, "Pending"))
+                val status = "pending"
+                clientTaskViewModel.update(Task(taskId, userInputTitle, userInputContent, userInputDate, userInputName, status))
                 etTitle.text.clear()
                 etContent.text.clear()
                 etName.text.clear()
-//                finish()
+                val intent = Intent(this@ClientUpdateActivity, ClientMainActivity::class.java)
+                startActivity(intent)
+                finish()
             } else {
                 Toast.makeText(applicationContext, "Please fill in the empty field.", Toast.LENGTH_LONG).show()
             }
@@ -69,5 +72,8 @@ class ClientUpdateActivity : AppCompatActivity() {
 
     private fun delete(taskId: Int) {
         clientTaskViewModel.deleteTaskById(taskId)
+        val intent = Intent(this@ClientUpdateActivity, ClientMainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }
