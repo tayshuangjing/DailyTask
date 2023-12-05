@@ -1,7 +1,9 @@
 package com.example.dailytask.client
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -19,6 +21,10 @@ import com.example.dailytask.db.TaskDatabase
 import com.example.dailytask.db.TaskRepository
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.Calendar
+import java.util.Locale
 
 class ClientUpdateActivity : AppCompatActivity() {
 
@@ -29,6 +35,9 @@ class ClientUpdateActivity : AppCompatActivity() {
     private lateinit var adapter: ArrayAdapter<String>
     private lateinit var rvNames: MutableList<String>
     private lateinit var existingNames: MutableList<String>
+    private val calendar = Calendar.getInstance()
+    private var date = LocalDateTime.now()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityUpdateClientBinding.inflate(layoutInflater)
@@ -49,12 +58,21 @@ class ClientUpdateActivity : AppCompatActivity() {
                         etTitle.setText(task.title)
                         etContent.setText(task.content)
                         etName.setText(task.username)
+                        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.getDefault())
+                        val formattedDate = formatter.format(task.date)
+                        etDate.setText(formattedDate)
                         rvNames = (task.collaborator ?: emptyList()).toMutableList()
 
                         initRecyclerView()
                     }
                 }
             }
+        }
+
+        //init calendar view
+        binding.etDate.inputType = InputType.TYPE_NULL
+        binding.etDate.setOnClickListener {
+            showCalendarPicker()
         }
 
         //init autocomplete text view
@@ -99,6 +117,23 @@ class ClientUpdateActivity : AppCompatActivity() {
         }
     }
 
+    private fun showCalendarPicker() {
+        val dialogPickerDialog = DatePickerDialog(this, { DatePicker, year: Int, monthOfYear: Int, dayOfMonth: Int ->
+            val selectedDate = Calendar.getInstance()
+            selectedDate.set(year, monthOfYear, dayOfMonth)
+            val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.getDefault())
+            val formattedDate = formatter.format(selectedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime())
+
+            date = selectedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()
+            binding.etDate.setText(formattedDate)
+        },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+        dialogPickerDialog.show()
+    }
+
     private fun initRecyclerView() {
         rvCollaboratorAdapter = ClientColAdapter(rvNames, {selectedItem: String -> listItemClicked(selectedItem)})
         binding.rvCollaborator.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -111,7 +146,7 @@ class ClientUpdateActivity : AppCompatActivity() {
                 val userInputTitle = etTitle.text.toString()
                 val userInputContent = etContent.text.toString()
                 val userInputName = etName.text.toString()
-                val userInputDate = LocalDateTime.now()
+                val userInputDate = date
                 clientTaskViewModel.update(Task(taskId, userInputTitle, userInputContent, userInputDate, userInputName, rvNames, selectedStatus))
                 etTitle.text.clear()
                 etContent.text.clear()
