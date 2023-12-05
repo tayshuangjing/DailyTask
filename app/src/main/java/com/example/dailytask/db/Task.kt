@@ -13,16 +13,18 @@ import java.time.format.DateTimeFormatter
 @Parcelize
 data class Task(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "taskId")
-    val taskId: Int?,
+    @ColumnInfo(name = "id")
+    val id: Int?,
     @ColumnInfo(name = "title")
     var title: String?,
     @ColumnInfo(name = "content")
     var content: String?,
     @ColumnInfo(name = "date")
     val date: LocalDateTime = LocalDateTime.now(),
-    @ColumnInfo(name = "userId")
-    var userId: String?,
+    @ColumnInfo(name = "username")
+    var username: String?,
+    @ColumnInfo(name = "collaborator")
+    var collaborator: MutableList<String>?,
     @ColumnInfo(name = "status")
     var status: String?
 ): Parcelable{

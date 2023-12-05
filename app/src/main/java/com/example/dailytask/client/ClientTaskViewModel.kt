@@ -13,8 +13,9 @@ class ClientTaskViewModel(private val repository: TaskRepository): ViewModel() {
 
     val tasks = repository.allTasks
 
+    val existingNames = mutableListOf("John", "Jane", "Alice", "Bob", "Charlie")
+
     fun insert(task: Task) = viewModelScope.launch {
-        Log.i("mytag", "data is inserted: $task")
         repository.insert(task)
     }
 
@@ -29,7 +30,6 @@ class ClientTaskViewModel(private val repository: TaskRepository): ViewModel() {
     fun getAllTasks() = liveData {
         tasks.collect{
             emit(it)
-            Log.i("mytag", "tasks in view model: $it")
         }
     }
 

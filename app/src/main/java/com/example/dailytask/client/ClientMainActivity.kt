@@ -46,16 +46,9 @@ class ClientMainActivity : AppCompatActivity() {
 
     private fun displayTask() {
         clientTaskViewModel.getAllTasks().observe(this, Observer {
-            Log.i("MyTag", it.toString())
             adapter.setList(it)
             adapter.notifyDataSetChanged()
         })
-//        clientTaskViewModel.getAllTasks().observe(this) { list ->
-//            Log.d("AdminMain", "List size: ${list?.size}")
-//            list?.let {
-//                adapter.setList(list)
-//            }
-//        }
     }
 
     private fun listItemClicked(task: Task) {
