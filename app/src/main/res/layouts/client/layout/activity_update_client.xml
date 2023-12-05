@@ -47,6 +47,32 @@
         android:elevation="@dimen/cardview_default_elevation"
         android:hint="Name" />
 
+    <Spinner
+        android:id="@+id/spStatus"
+        android:padding="10dp"
+        android:ems="10"
+        android:layout_margin="20dp"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content" />
+
+    <AutoCompleteTextView
+        android:id="@+id/etCol"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:background="@drawable/rounded_edit_text"
+        android:padding="10dp"
+        android:layout_margin="20dp"
+        android:elevation="@dimen/cardview_default_elevation"
+        android:hint="Add Collaborator" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvCollaborator"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:padding="10dp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

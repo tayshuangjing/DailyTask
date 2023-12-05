@@ -6,4 +6,11 @@
         <item>Reworked</item>
         <item>Verified</item>
     </string-array>
+
+    <string-array name="task_status_client">
+        <item>Pending</item>
+        <item>Completed</item>
+        <item>Reworked</item>
+        <item>Verified</item>
+    </string-array>
 </resources>

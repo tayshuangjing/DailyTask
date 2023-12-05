@@ -20,6 +20,9 @@ class ClientTaskViewModel(private val repository: TaskRepository): ViewModel() {
 
     val tasks = repository.allTasks
 
+    val existingNames = mutableListOf("John", "Jane", "Alice", "Bob", "Charlie")
+    val rvNames = mutableListOf<String>()
+
     fun insert(task: Task) = viewModelScope.launch {
         Log.i("mytag", "data is inserted: $task")
         repository.insert(task)
