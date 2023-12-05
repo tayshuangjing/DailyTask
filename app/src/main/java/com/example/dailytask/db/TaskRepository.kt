@@ -16,10 +16,6 @@ class TaskRepository(private val taskDao: TaskDao) {
         taskDao.update(task)
     }
 
-    suspend fun delete(task: Task){
-        taskDao.delete(task)
-    }
-
     suspend fun deleteTaskById(taskId: Int){
         Log.d("TaskDao", "Querying task with ID: $taskId")
         taskDao.deleteTaskById(taskId)

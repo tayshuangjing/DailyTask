@@ -4,43 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:orientation="vertical"
+    android:gravity="center"
     android:padding="50dp"
-    tools:context=".MainActivity">
+    tools:context=".user.AddUserActivity">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Daily Task Scheduler"
-        android:gravity="center"
-        android:layout_margin="20dp"
-        android:textSize="24dp"
-        android:textStyle="bold"
-        />
-
-    <Button
-        android:id="@+id/btn_admin"
+        android:padding="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20dp"
-        android:layout_margin="10dp"
-        android:text="Admin" />
+        android:text="Username" />
 
-    <Button
-        android:id="@+id/btn_client"
+    <EditText
+        android:id="@+id/username"
+        android:padding="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20dp"
-        android:layout_margin="10dp"
-        android:text="Client" />
+        android:hint="Alex" />
 
-    <Button
-        android:id="@+id/btn_addUser"
+    <Spinner
+        android:id="@+id/role"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:layout_margin="10dp"
-        android:text="Add User" />
+        android:padding="15dp"
+        android:spinnerMode="dropdown"/>
+
+    <Button
+        android:id="@+id/btnAddUser"
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add User"/>
 
 </LinearLayout>

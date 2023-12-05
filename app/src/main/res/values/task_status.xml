@@ -6,4 +6,8 @@
         <item>Reworked</item>
         <item>Verified</item>
     </string-array>
+    <string-array name="role">
+        <item>Admin</item>
+        <item>Client</item>
+    </string-array>
 </resources>
