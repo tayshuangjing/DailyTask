@@ -8,26 +8,27 @@ import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 import com.example.dailytask.util.Converters
 
-@Database(entities = arrayOf(Task::class), version = 1)
+@Database(entities = [Task::class, User::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
-abstract class TaskDatabase : RoomDatabase() {
-    abstract val taskDao : TaskDao
+abstract class AppDatabase : RoomDatabase() {
+    abstract fun taskDao() : TaskDao
+    abstract fun userDao(): UserDao
 
     companion object{
         @Volatile
-        private var INSTANCE: TaskDatabase? = null
+        private var INSTANCE: AppDatabase? = null
 
-        fun getDatabase(context: Context): TaskDatabase {
+        fun getDatabase(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this){
                 INSTANCE ?: buildDatabase(context).also { INSTANCE = it }
 
             }
         }
-        private fun buildDatabase(context: Context): TaskDatabase{
+        private fun buildDatabase(context: Context): AppDatabase{
             return Room.databaseBuilder(
                 context.applicationContext,
-                TaskDatabase::class.java,
-                "task_database"
+                AppDatabase::class.java,
+                "app_database"
             ).build()
         }
     }

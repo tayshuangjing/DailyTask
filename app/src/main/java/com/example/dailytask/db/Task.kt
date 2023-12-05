@@ -3,6 +3,7 @@ package com.example.dailytask.db
 import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 import java.time.LocalDateTime
@@ -12,15 +13,16 @@ import java.time.format.DateTimeFormatter
 @Parcelize
 data class Task(
     @PrimaryKey(autoGenerate = true)
-    val id: Int?,
+    @ColumnInfo(name = "taskId")
+    val taskId: Int?,
     @ColumnInfo(name = "title")
     var title: String?,
     @ColumnInfo(name = "content")
     var content: String?,
     @ColumnInfo(name = "date")
     val date: LocalDateTime = LocalDateTime.now(),
-    @ColumnInfo(name = "username")
-    var username: String?,
+    @ColumnInfo(name = "userId")
+    var userId: String?,
     @ColumnInfo(name = "status")
     var status: String?
 ): Parcelable{
