@@ -17,8 +17,6 @@ class ClientColAdapter(private val usersList: List<String>, private val clickLis
     }
 
     override fun onBindViewHolder(holder: CollaboratorViewHolder, position: Int) {
-//        val user = usersList[position]
-//        holder.myTextView.text = user
         holder.bind(usersList[position], clickListener)
     }
 }
