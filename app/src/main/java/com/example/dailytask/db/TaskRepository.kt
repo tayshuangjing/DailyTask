@@ -17,8 +17,11 @@ class TaskRepository(private val taskDao: TaskDao) {
     }
 
     suspend fun deleteTaskById(taskId: Int){
-        Log.d("TaskDao", "Querying task with ID: $taskId")
         taskDao.deleteTaskById(taskId)
+    }
+
+    suspend fun updateTaskStatus(taskId: Int, newStatus: String){
+        taskDao.updateTaskStatus(taskId,newStatus)
     }
 
     fun getTaskById(taskId: Int): Flow<Task?> {
@@ -26,9 +29,5 @@ class TaskRepository(private val taskDao: TaskDao) {
         return taskDao.getTaskById(taskId).onEach { task: Task? ->
         Log.d("TaskDao", "Task result: $task")
         }
-    }
-
-    suspend fun updateTaskStatus(taskId: Int, newStatus: String){
-        taskDao.updateTaskStatus(taskId,newStatus)
     }
 }

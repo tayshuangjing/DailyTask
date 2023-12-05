@@ -22,6 +22,7 @@ class ClientAddActivity : AppCompatActivity() {
     private lateinit var rvCollaboratorAdapter: ClientColAdapter
     private lateinit var adapter: ArrayAdapter<String>
     private lateinit var existingNames: MutableList<String>
+    private lateinit var rvNames: MutableList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +34,7 @@ class ClientAddActivity : AppCompatActivity() {
         clientTaskViewModel = ViewModelProvider(this, ClientTaskViewModelFactory(repository)).get(ClientTaskViewModel::class.java)
 
         //init recycler view
-//        rvNames = mutableListOf()
+        rvNames = mutableListOf()
         initRecyclerView()
 
         //init autocomplete text view
@@ -42,7 +43,7 @@ class ClientAddActivity : AppCompatActivity() {
         binding.etCol.setAdapter(adapter)
         binding.etCol.setOnItemClickListener { _, _, position, _ ->
             val selectedName = adapter.getItem(position).toString()
-            clientTaskViewModel.rvNames.add(selectedName)
+            rvNames.add(selectedName)
             existingNames.remove(selectedName)
             adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, existingNames)
             binding.etCol.setAdapter(adapter)
@@ -59,19 +60,19 @@ class ClientAddActivity : AppCompatActivity() {
     }
 
     private fun initRecyclerView() {
-        rvCollaboratorAdapter = ClientColAdapter(clientTaskViewModel.rvNames, {selectedItem: String -> listItemClicked(selectedItem)})
+        rvCollaboratorAdapter = ClientColAdapter(rvNames, {selectedItem: String -> listItemClicked(selectedItem)})
         binding.rvCollaborator.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rvCollaborator.adapter = rvCollaboratorAdapter
     }
 
     private fun save() {
         binding.apply {
-            if (!etTitle.text.isEmpty() && !etContent.text.isEmpty() && !etName.text.isEmpty() && !clientTaskViewModel.rvNames.isEmpty()){
+            if (!etTitle.text.isEmpty() && !etContent.text.isEmpty() && !etName.text.isEmpty() && !rvNames.isEmpty()){
                 val userInputTitle = etTitle.text.toString()
                 val userInputContent = etContent.text.toString()
                 val userInputName = etName.text.toString()
                 val status = "Pending"
-                clientTaskViewModel.insert(Task(null, userInputTitle, userInputContent, LocalDateTime.now(), userInputName, status))
+                clientTaskViewModel.insert(Task(null, userInputTitle, userInputContent, LocalDateTime.now(), userInputName, rvNames, status))
                 etTitle.text.clear()
                 etContent.text.clear()
                 etName.text.clear()
@@ -89,7 +90,7 @@ class ClientAddActivity : AppCompatActivity() {
     }
 
     private fun listItemClicked(selectedItem: String) {
-        clientTaskViewModel.rvNames.remove(selectedItem)
+        rvNames.remove(selectedItem)
         existingNames.add(selectedItem)
         adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, existingNames)
         binding.etCol.setAdapter(adapter)

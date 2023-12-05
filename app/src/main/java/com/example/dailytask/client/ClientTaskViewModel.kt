@@ -21,7 +21,6 @@ class ClientTaskViewModel(private val repository: TaskRepository): ViewModel() {
     val tasks = repository.allTasks
 
     val existingNames = mutableListOf("John", "Jane", "Alice", "Bob", "Charlie")
-    val rvNames = mutableListOf<String>()
 
     fun insert(task: Task) = viewModelScope.launch {
         Log.i("mytag", "data is inserted: $task")
@@ -30,10 +29,6 @@ class ClientTaskViewModel(private val repository: TaskRepository): ViewModel() {
 
     fun update(task: Task) = viewModelScope.launch {
         repository.update(task)
-    }
-
-    fun delete(task: Task) = viewModelScope.launch {
-        repository.delete(task)
     }
 
     fun deleteTaskById(taskId: Int) = viewModelScope.launch {
