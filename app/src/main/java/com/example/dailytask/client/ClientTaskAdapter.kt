@@ -36,7 +36,7 @@ class MyViewHolder(val binding: ListItemClientBinding): RecyclerView.ViewHolder(
     fun bind(task: Task, clickListener: (Task) -> Unit) {
         binding.tvTitle.text = task.title
         binding.tvDate.text = task.createDateFormat
-        binding.tvName.text = task.username
+        binding.tvName.text = task.userId
         binding.listItemLayout.setOnClickListener{
             clickListener(task)
         }

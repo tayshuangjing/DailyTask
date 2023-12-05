@@ -1,6 +1,7 @@
 package com.example.dailytask.user
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
@@ -21,6 +22,7 @@ class UserViewModel(private val repository: UserRepository): ViewModel(){
     fun getAllUsers() = liveData {
         user.collect{
             emit(it)
+            Log.d("User", it.toString())
         }
     }
 }

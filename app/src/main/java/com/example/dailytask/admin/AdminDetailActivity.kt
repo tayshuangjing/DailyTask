@@ -4,24 +4,17 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
 import android.view.View
-import android.widget.Adapter
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.dailytask.R
 import com.example.dailytask.databinding.ActivityDetailAdminBinding
-import com.example.dailytask.db.Task
-import com.example.dailytask.db.TaskDatabase
+import com.example.dailytask.db.AppDatabase
 import com.example.dailytask.db.TaskRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.lang.Exception
 
 class AdminDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailAdminBinding
@@ -36,9 +29,9 @@ class AdminDetailActivity : AppCompatActivity() {
         binding = ActivityDetailAdminBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val dao = TaskDatabase.getDatabase(application).taskDao
+        val dao = AppDatabase.getDatabase(application).taskDao()
         repository = TaskRepository(dao)
-        viewModel = ViewModelProvider(this, AdminTaskViewModelFactory(application)).get(AdminTaskViewModel::class.java)
+        viewModel = ViewModelProvider(this, AdminTaskViewModelFactory(repository)).get(AdminTaskViewModel::class.java)
 
         selectedId = intent.getIntExtra("selectedId", 0)
         Log.d("TaskDetail", "Received ID:$selectedId")
@@ -52,7 +45,7 @@ class AdminDetailActivity : AppCompatActivity() {
                     Log.d("TaskDetail", "Task is not null. Setting values.")
                     binding.tvTitle.text = task.title
                     binding.tvContent.text = task.content
-                    binding.tvName.text = task.username
+                    binding.tvName.text = task.userId
                     binding.tvDate.text = task.createDateFormat
                     currentStatus = task.status.toString()
 

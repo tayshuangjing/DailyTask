@@ -55,8 +55,14 @@ class AddUserActivity : AppCompatActivity() {
                         if(binding.username.text.isNullOrEmpty()){
                            Toast.makeText(this@AddUserActivity, "Username is null",Toast.LENGTH_SHORT).show()
                         }else{
-                            val userName = binding.username.toString()
-                            viewModel.insert(User(null, userName, null, role))
+                            val userName = binding.username.text
+                            var password = ""
+                            if(role == "Client"){
+                                password = userName.toString() + "123C"
+                            }else{
+                                password = userName.toString() + "123A"
+                            }
+                            viewModel.insert(User(null, userName.toString(), password, role))
                         }
                     }
                     val intent = Intent(

@@ -2,6 +2,7 @@ package com.example.dailytask.admin
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -35,12 +36,13 @@ class AdminTaskAdapter(private val clickListener: (Task) -> Unit) :
     fun updateList(newList: List<Task>) {
         taskList.clear()
         taskList.addAll(newList)
+        Log.d("Task", newList.toString())
         notifyDataSetChanged()
     }
 }
 
 class AdminTaskViewHolder(
-    val binding: ListItemBinding,
+    private val binding: ListItemBinding,
     private val clickListener: (Task) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
@@ -91,7 +93,7 @@ class AdminTaskViewHolder(
     fun bind(task: Task) {
         binding.tvTitle.text = task.title
         binding.tvDate.text = task.createDateFormat
-        binding.tvName.text = task.username
+        binding.tvName.text = task.userId
         binding.tvComplete.text = task.status
         updateColor()
     }

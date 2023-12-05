@@ -6,6 +6,7 @@ import android.os.Bundle
 import com.example.dailytask.admin.AdminMainActivity
 import com.example.dailytask.client.ClientMainActivity
 import com.example.dailytask.databinding.ActivityMainBinding
+import com.example.dailytask.user.AddUserActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,6 +22,11 @@ class MainActivity : AppCompatActivity() {
         }
         binding.btnClient.setOnClickListener{
             val intent = Intent(this, ClientMainActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.btnAddUser.setOnClickListener{
+            val intent = Intent(this, AddUserActivity::class.java)
             startActivity(intent)
         }
     }

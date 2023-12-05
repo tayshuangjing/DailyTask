@@ -2,7 +2,6 @@ package com.example.dailytask.client
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -10,7 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import com.example.dailytask.databinding.ActivityUpdateClientBinding
 import com.example.dailytask.db.Task
-import com.example.dailytask.db.TaskDatabase
+import com.example.dailytask.db.AppDatabase
 import com.example.dailytask.db.TaskRepository
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
@@ -24,8 +23,8 @@ class ClientUpdateActivity : AppCompatActivity() {
         binding = ActivityUpdateClientBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val database = Room.databaseBuilder(applicationContext, TaskDatabase::class.java, "task_database").build()
-        val repository = TaskRepository(database.taskDao)
+        val database = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "task_database").build()
+        val repository = TaskRepository(database.taskDao())
         clientTaskViewModel = ViewModelProvider(this, ClientTaskViewModelFactory(repository)).get(ClientTaskViewModel::class.java)
 
         val taskId = intent.getIntExtra("task_id", 0)
@@ -35,7 +34,7 @@ class ClientUpdateActivity : AppCompatActivity() {
                 binding.apply {
                     etTitle.setText(task?.title)
                     etContent.setText(task?.content)
-                    etName.setText(task?.username)
+                    etName.setText(task?.userId)
                 }
             }
         }

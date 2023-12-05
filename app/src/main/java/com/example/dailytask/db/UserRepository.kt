@@ -6,7 +6,7 @@ class UserRepository(private val userDao: UserDao) {
     val allUser = userDao.getAllUsers()
 
     suspend fun insert(user: User){
-        Log.d("User add", "${user.userName} and ${user.role}" )
+        Log.d("User add", "${user.userName.toString()} and ${user.role}" )
         userDao.insert(user)
     }
 
