@@ -62,15 +62,16 @@ class AddUserActivity : AppCompatActivity() {
                             }else{
                                 password = userName.toString() + "123A"
                             }
-                            viewModel.insert(User(null, userName.toString(), password, role))
-                        }
-                    }
+                            viewModel.insert(User(userName.toString(), password, role))
+
                     val intent = Intent(
                         this@AddUserActivity,
                         MainActivity::class.java
                     )
                     startActivity(intent)
                     finish()
+                        }
+                    }
                 }
             }
 

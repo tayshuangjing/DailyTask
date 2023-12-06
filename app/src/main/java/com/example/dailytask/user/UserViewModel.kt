@@ -7,8 +7,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.example.dailytask.admin.AdminTaskViewModel
+import com.example.dailytask.db.Task
 import com.example.dailytask.db.User
 import com.example.dailytask.db.UserRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class UserViewModel(private val repository: UserRepository): ViewModel(){
@@ -24,6 +26,10 @@ class UserViewModel(private val repository: UserRepository): ViewModel(){
             emit(it)
             Log.d("User", it.toString())
         }
+    }
+
+    fun getUserByName(userName: String): Flow<User?> {
+        return repository.getUserByName(userName)
     }
 }
 

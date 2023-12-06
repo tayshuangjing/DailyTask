@@ -45,7 +45,7 @@ class AdminDetailActivity : AppCompatActivity() {
                     Log.d("TaskDetail", "Task is not null. Setting values.")
                     binding.tvTitle.text = task.title
                     binding.tvContent.text = task.content
-                    binding.tvName.text = task.userId
+                    binding.tvName.text = task.username
                     binding.tvDate.text = task.createDateFormat
                     currentStatus = task.status.toString()
 

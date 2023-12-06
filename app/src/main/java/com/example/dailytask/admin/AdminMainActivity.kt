@@ -27,7 +27,6 @@ class AdminMainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         repository = TaskRepository(Room.databaseBuilder(applicationContext,AppDatabase::class.java, "task_database").build().taskDao())
-//        repository = TaskRepository(AppDatabase.getDatabase(applicationContext).taskDao())
         viewModel = ViewModelProvider(this, AdminTaskViewModelFactory(repository)
         ).get(AdminTaskViewModel::class.java)
 
@@ -69,7 +68,7 @@ class AdminMainActivity : AppCompatActivity() {
 
     private fun listItemClicked(selectedId: Task) {
         val intent = Intent(this, AdminDetailActivity::class.java)
-        intent.putExtra("selectedId",selectedId.taskId)
+        intent.putExtra("selectedId",selectedId.id)
         startActivity(intent)
         finish()
     }

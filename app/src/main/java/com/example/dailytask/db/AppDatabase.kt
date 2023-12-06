@@ -8,7 +8,12 @@ import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 import com.example.dailytask.util.Converters
 
-@Database(entities = [Task::class, User::class], version = 1, exportSchema = false)
+@Database(
+    entities = [
+        Task::class,
+        User::class
+    ],
+    version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun taskDao() : TaskDao

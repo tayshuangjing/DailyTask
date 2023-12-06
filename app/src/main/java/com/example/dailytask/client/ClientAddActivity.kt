@@ -9,8 +9,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.example.dailytask.databinding.ActivityAddClientBinding
+import com.example.dailytask.db.AppDatabase
 import com.example.dailytask.db.Task
-import com.example.dailytask.db.TaskDatabase
 import com.example.dailytask.db.TaskRepository
 import java.time.LocalDateTime
 
@@ -28,8 +28,8 @@ class ClientAddActivity : AppCompatActivity() {
         binding = ActivityAddClientBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val database = Room.databaseBuilder(applicationContext, TaskDatabase::class.java, "task_database").build()
-        val repository = TaskRepository(database.taskDao)
+        val database = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "task_database").build()
+        val repository = TaskRepository(database.taskDao())
         clientTaskViewModel = ViewModelProvider(this, ClientTaskViewModelFactory(repository)).get(ClientTaskViewModel::class.java)
 
         //init recycler view
