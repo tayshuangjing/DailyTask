@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
@@ -16,16 +17,16 @@ interface TaskDao {
     @Update
     suspend fun update(task: Task)
 
-    @Query("DELETE FROM task_table WHERE id = :taskId")
+    @Query("DELETE FROM task_table WHERE taskId = :taskId")
     suspend fun deleteTaskById(taskId: Int)
 
-    @Query("SELECT * FROM task_table ORDER BY id ASC")
+    @Query("SELECT * FROM task_table ORDER BY taskId ASC")
     fun getAllTasks(): Flow<List<Task>>
 
-    @Query("SELECT * FROM task_table WHERE id = :id")
-    fun getTaskById(id: Int): Flow<Task?>
+    @Query("SELECT * FROM task_table WHERE taskId = :taskId")
+    fun getTaskById(taskId: Int): Flow<Task?>
 
-    @Query("UPDATE task_table SET status = :newStatus WHERE id = :id")
-    suspend fun updateTaskStatus(id: Int, newStatus: String)
+    @Query("UPDATE task_table SET status = :newStatus WHERE taskId = :taskId")
+    suspend fun updateTaskStatus(taskId: Int, newStatus: String)
 
 }

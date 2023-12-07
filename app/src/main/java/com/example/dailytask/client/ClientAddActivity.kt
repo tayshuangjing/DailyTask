@@ -71,7 +71,7 @@ class ClientAddActivity : AppCompatActivity() {
                 val userInputContent = etContent.text.toString()
                 val userInputName = etName.text.toString()
                 val status = "Pending"
-                clientTaskViewModel.insert(Task(null, userInputTitle, userInputContent, LocalDateTime.now(), userInputName, rvNames, status))
+                clientTaskViewModel.insert(Task(null, userInputTitle, userInputContent, LocalDateTime.now(), userInputName, rvNames, status, null))
                 etTitle.text.clear()
                 etContent.text.clear()
                 etName.text.clear()

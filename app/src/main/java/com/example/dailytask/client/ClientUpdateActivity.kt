@@ -111,7 +111,7 @@ class ClientUpdateActivity : AppCompatActivity() {
                 val userInputContent = etContent.text.toString()
                 val userInputName = etName.text.toString()
                 val userInputDate = LocalDateTime.now()
-                clientTaskViewModel.update(Task(taskId, userInputTitle, userInputContent, userInputDate, userInputName, rvNames, selectedStatus))
+                clientTaskViewModel.update(Task(taskId, userInputTitle, userInputContent, userInputDate, userInputName, rvNames, selectedStatus, null))
                 etTitle.text.clear()
                 etContent.text.clear()
                 etName.text.clear()

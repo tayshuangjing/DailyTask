@@ -14,20 +14,26 @@ import com.example.dailytask.databinding.ActivityMainAdminBinding
 import com.example.dailytask.db.Task
 import com.example.dailytask.db.AppDatabase
 import com.example.dailytask.db.TaskRepository
+import com.example.dailytask.db.UserRepository
+import com.example.dailytask.user.UserViewModel
 import kotlinx.coroutines.launch
 
 class AdminMainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainAdminBinding
-    private lateinit var viewModel: AdminTaskViewModel
+    private lateinit var taskViewModel: AdminTaskViewModel
     private lateinit var adapter: AdminTaskAdapter
-    private lateinit var repository: TaskRepository
+    private lateinit var taskRepository: TaskRepository
+    private lateinit var userViewModel: UserViewModel
+    private lateinit var userRepository: UserRepository
+
+    private var username: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainAdminBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        repository = TaskRepository(Room.databaseBuilder(applicationContext,AppDatabase::class.java, "task_database").build().taskDao())
-        viewModel = ViewModelProvider(this, AdminTaskViewModelFactory(repository)
+        taskRepository = TaskRepository(Room.databaseBuilder(applicationContext,AppDatabase::class.java, "task_database").build().taskDao())
+        taskViewModel = ViewModelProvider(this, AdminTaskViewModelFactory(taskRepository)
         ).get(AdminTaskViewModel::class.java)
 
         initRecyclerView()
@@ -41,7 +47,7 @@ class AdminMainActivity : AppCompatActivity() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 newText?.let {
                     lifecycleScope.launch {
-                        viewModel.searchTask(it).observe(this@AdminMainActivity){
+                        taskViewModel.searchTask(it).observe(this@AdminMainActivity){
                                 filteredList -> adapter.updateList(filteredList)
                         }
                     }
@@ -59,16 +65,15 @@ class AdminMainActivity : AppCompatActivity() {
     }
 
     private fun displayTaskList() {
-        viewModel.getAllTasks().observe(this, Observer {task ->
+        taskViewModel.getAllTasks().observe(this, Observer {task ->
             adapter.updateList(task)
-
             Log.d("Task", task.toString())
         })
     }
 
     private fun listItemClicked(selectedId: Task) {
         val intent = Intent(this, AdminDetailActivity::class.java)
-        intent.putExtra("selectedId",selectedId.id)
+        intent.putExtra("selectedId",selectedId.taskId)
         startActivity(intent)
         finish()
     }

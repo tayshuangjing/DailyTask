@@ -2,6 +2,7 @@ package com.example.dailytask.user
 
 import android.app.Application
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
@@ -14,7 +15,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class UserViewModel(private val repository: UserRepository): ViewModel(){
-
     val user = repository.allUser
     fun insert(user: User) =
         viewModelScope.launch {
@@ -30,6 +30,15 @@ class UserViewModel(private val repository: UserRepository): ViewModel(){
 
     fun getUserByName(userName: String): Flow<User?> {
         return repository.getUserByName(userName)
+    }
+
+    fun delete(user: User) = viewModelScope.launch {
+        val deleteUser = repository.delete(user)
+        if(deleteUser > 0){
+            Log.d("Delete successful", deleteUser.toString())
+        }else{
+            Log.d("Error", "Error Occurred")
+        }
     }
 }
 
