@@ -11,7 +11,7 @@ import androidx.room.Room
 import com.example.dailytask.R
 import com.example.dailytask.databinding.ActivityMainClientBinding
 import com.example.dailytask.db.Task
-import com.example.dailytask.db.TaskDatabase
+import com.example.dailytask.db.AppDatabase
 import com.example.dailytask.db.TaskRepository
 
 class ClientMainActivity : AppCompatActivity() {
@@ -26,8 +26,8 @@ class ClientMainActivity : AppCompatActivity() {
         binding = ActivityMainClientBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val database = Room.databaseBuilder(applicationContext, TaskDatabase::class.java, "task_database").build()
-        val repository = TaskRepository(database.taskDao)
+        val database = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "task_database").build()
+        val repository = TaskRepository(database.taskDao())
         clientTaskViewModel = ViewModelProvider(this, ClientTaskViewModelFactory(repository)).get(ClientTaskViewModel::class.java)
 
         initRecyclerView()

@@ -19,21 +19,26 @@
         android:textStyle="bold"
         />
 
-    <Button
-        android:id="@+id/btn_admin"
+    <EditText
+        android:id="@+id/username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:layout_margin="10dp"
-        android:text="Admin" />
+        android:hint="Username"/>
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:hint="Password"/>
 
     <Button
-        android:id="@+id/btn_client"
+        android:id="@+id/btn_Submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20dp"
         android:layout_margin="10dp"
-        android:text="Client" />
+        android:text="Submit" />
 
     <Button
         android:id="@+id/btn_addUser"

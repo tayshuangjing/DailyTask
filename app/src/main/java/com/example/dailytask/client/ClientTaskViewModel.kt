@@ -1,20 +1,13 @@
 package com.example.dailytask.client
 
 import android.util.Log
-import android.widget.Toast
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
-import com.example.dailytask.databinding.ActivityAddClientBinding
 import com.example.dailytask.db.Task
-import com.example.dailytask.db.TaskDatabase
 import com.example.dailytask.db.TaskRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
 
 class ClientTaskViewModel(private val repository: TaskRepository): ViewModel() {
 
