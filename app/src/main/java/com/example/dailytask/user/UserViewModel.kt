@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.example.dailytask.admin.AdminTaskViewModel
 import com.example.dailytask.db.Task
@@ -16,6 +17,7 @@ import kotlinx.coroutines.launch
 class UserViewModel(private val repository: UserRepository): ViewModel(){
 
     val user = repository.allUser
+
     fun insert(user: User) =
         viewModelScope.launch {
             repository.insert(user)
