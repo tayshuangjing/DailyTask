@@ -6,8 +6,8 @@ import androidx.room.Relation
 data class TaskWithUser (
     @Embedded val task: Task,
     @Relation(
-        parentColumn = "username",
-        entityColumn = "username"
+        parentColumn = "userId",
+        entityColumn = "userId"
     )
     val user: User
 )

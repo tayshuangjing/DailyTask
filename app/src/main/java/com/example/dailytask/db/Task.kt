@@ -20,14 +20,12 @@ data class Task(
     var content: String?,
     @ColumnInfo(name = "date")
     val date: LocalDateTime = LocalDateTime.now(),
-    @ColumnInfo(name = "username")
-    var username: String?,
+    @ColumnInfo(name = "userId")
+    var userId: String?,
     @ColumnInfo(name = "collaborator")
     var collaborator: MutableList<String>?,
     @ColumnInfo(name = "status")
-    var status: String?,
-    @ColumnInfo(name = "userId")
-    var userId: Int?
+    var status: String?
 ): Parcelable{
     val createDateFormat: String
         get() = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
