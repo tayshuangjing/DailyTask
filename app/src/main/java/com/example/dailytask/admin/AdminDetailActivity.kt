@@ -36,6 +36,11 @@ class AdminDetailActivity : AppCompatActivity() {
         selectedId = intent.getIntExtra("selectedId", 0)
         Log.d("TaskDetail", "Received ID:$selectedId")
 
+        spinner()
+    }
+
+    private fun spinner(){
+
         spinner = binding.spinner
 
         lifecycleScope.launch {

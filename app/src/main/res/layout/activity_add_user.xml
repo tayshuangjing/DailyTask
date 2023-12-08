@@ -5,9 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
-    android:padding="50dp"
     tools:context=".user.AddUserActivity">
+
+    <Button
+        android:id="@+id/btnDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_margin="10dp"
+        android:text="Delete User" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="50dp">
 
     <TextView
         android:padding="15dp"
@@ -38,4 +51,5 @@
         android:layout_height="wrap_content"
         android:text="Add User"/>
 
+    </LinearLayout>
 </LinearLayout>

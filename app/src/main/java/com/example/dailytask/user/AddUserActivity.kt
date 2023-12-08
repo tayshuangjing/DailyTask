@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.dailytask.MainActivity
 import com.example.dailytask.R
+import com.example.dailytask.admin.AdminDetailActivity
 import com.example.dailytask.databinding.ActivityAddUserBinding
 import com.example.dailytask.db.AppDatabase
 import com.example.dailytask.db.User
@@ -31,6 +32,23 @@ class AddUserActivity : AppCompatActivity() {
 
         displayUserList()
 
+        spinner()
+
+        binding.btnDelete.setOnClickListener{
+            val intent = Intent(this, DeleteUserActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+    }
+
+    private fun displayUserList() {
+        viewModel.getAllUsers().observe(this) { list ->
+            Log.d("AdminMain", "List size: ${list?.size}")
+        }
+    }
+
+    private fun spinner(){
         var spinner = binding.role
 
         ArrayAdapter.createFromResource(
@@ -53,7 +71,7 @@ class AddUserActivity : AppCompatActivity() {
                 binding.btnAddUser.setOnClickListener {
                     binding.apply {
                         if(binding.username.text.isNullOrEmpty()){
-                           Toast.makeText(this@AddUserActivity, "Username is null",Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@AddUserActivity, "Username is null",Toast.LENGTH_SHORT).show()
                         }else{
                             val userName = binding.username.text
                             var password = ""
@@ -64,12 +82,12 @@ class AddUserActivity : AppCompatActivity() {
                             }
                             viewModel.insert(User(userName.toString(), password, role))
 
-                    val intent = Intent(
-                        this@AddUserActivity,
-                        MainActivity::class.java
-                    )
-                    startActivity(intent)
-                    finish()
+                            val intent = Intent(
+                                this@AddUserActivity,
+                                MainActivity::class.java
+                            )
+                            startActivity(intent)
+                            finish()
                         }
                     }
                 }
@@ -78,12 +96,6 @@ class AddUserActivity : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 // Handle nothing selected if needed
             }
-        }
-    }
-
-    private fun displayUserList() {
-        viewModel.getAllUsers().observe(this) { list ->
-            Log.d("AdminMain", "List size: ${list?.size}")
         }
     }
 }
