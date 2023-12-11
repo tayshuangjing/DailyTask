@@ -1,7 +1,10 @@
 package com.example.dailytask.client
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -16,29 +19,44 @@ import com.example.dailytask.databinding.ActivityUpdateClientBinding
 import com.example.dailytask.db.AppDatabase
 import com.example.dailytask.db.Task
 import com.example.dailytask.db.TaskRepository
+import com.example.dailytask.db.UserRepository
+import com.example.dailytask.user.UserViewModel
+import com.example.dailytask.user.UserViewModelFactory
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.Calendar
+import java.util.Locale
 
 class ClientUpdateActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityUpdateClientBinding
     private lateinit var clientTaskViewModel: ClientTaskViewModel
+    private lateinit var userViewModel: UserViewModel
     private lateinit var selectedStatus: String
     private lateinit var rvCollaboratorAdapter: ClientColAdapter
     private lateinit var adapter: ArrayAdapter<String>
     private lateinit var rvNames: MutableList<String>
     private lateinit var existingNames: MutableList<String>
+    private val calendar = Calendar.getInstance()
+    private var date = LocalDateTime.now()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityUpdateClientBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val database = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "task_database").build()
-        val repository = TaskRepository(database.taskDao())
-        clientTaskViewModel = ViewModelProvider(this, ClientTaskViewModelFactory(repository)).get(ClientTaskViewModel::class.java)
+        val taskRepository = TaskRepository(database.taskDao())
+        clientTaskViewModel = ViewModelProvider(this, ClientTaskViewModelFactory(taskRepository)).get(ClientTaskViewModel::class.java)
+
+        val userRepository = UserRepository(database.userDao())
+        userViewModel = ViewModelProvider(this, UserViewModelFactory(userRepository)).get(UserViewModel::class.java)
 
         val taskId = intent.getIntExtra("task_id", 0)
         rvNames = mutableListOf()
+        existingNames = mutableListOf()
 
         //init data
         lifecycleScope.launch {
@@ -47,8 +65,16 @@ class ClientUpdateActivity : AppCompatActivity() {
                     binding.apply {
                         etTitle.setText(task.title)
                         etContent.setText(task.content)
-                        etName.setText(task.username)
+                        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.getDefault())
+                        val formattedDate = formatter.format(task.date)
+                        etDate.setText(formattedDate)
                         rvNames = (task.collaborator ?: emptyList()).toMutableList()
+                        userViewModel.getAllUsers().observe(this@ClientUpdateActivity) { list ->
+                            existingNames = list.map { it.userName }.toMutableList()
+                            existingNames.removeAll(rvNames)
+                            adapter = ArrayAdapter(this@ClientUpdateActivity, android.R.layout.simple_dropdown_item_1line, existingNames)
+                            binding.etCol.setAdapter(adapter)
+                        }
 
                         initRecyclerView()
                     }
@@ -56,10 +82,13 @@ class ClientUpdateActivity : AppCompatActivity() {
             }
         }
 
+        //init calendar view
+        binding.etDate.inputType = InputType.TYPE_NULL
+        binding.etDate.setOnClickListener {
+            showCalendarPicker()
+        }
+
         //init autocomplete text view
-        existingNames = clientTaskViewModel.existingNames
-        adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, existingNames)
-        binding.etCol.setAdapter(adapter)
         binding.etCol.setOnItemClickListener { _, _, position, _ ->
             val selectedName = adapter.getItem(position).toString()
             rvNames.add(selectedName)
@@ -98,6 +127,23 @@ class ClientUpdateActivity : AppCompatActivity() {
         }
     }
 
+    private fun showCalendarPicker() {
+        val dialogPickerDialog = DatePickerDialog(this, { DatePicker, year: Int, monthOfYear: Int, dayOfMonth: Int ->
+            val selectedDate = Calendar.getInstance()
+            selectedDate.set(year, monthOfYear, dayOfMonth)
+            val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.getDefault())
+            val formattedDate = formatter.format(selectedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime())
+
+            date = selectedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()
+            binding.etDate.setText(formattedDate)
+        },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+        dialogPickerDialog.show()
+    }
+
     private fun initRecyclerView() {
         rvCollaboratorAdapter = ClientColAdapter(rvNames, {selectedItem: String -> listItemClicked(selectedItem)})
         binding.rvCollaborator.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -106,15 +152,15 @@ class ClientUpdateActivity : AppCompatActivity() {
 
     private fun update(taskId: Int, selectedStatus: String) {
         binding.apply {
-            if (!etTitle.text.isEmpty() && !etContent.text.isEmpty() && !etName.text.isEmpty() && !rvNames.isEmpty()){
+            if (!etTitle.text.isEmpty() && !etContent.text.isEmpty() && !rvNames.isEmpty()){
                 val userInputTitle = etTitle.text.toString()
                 val userInputContent = etContent.text.toString()
-                val userInputName = etName.text.toString()
-                val userInputDate = LocalDateTime.now()
-                clientTaskViewModel.update(Task(taskId, userInputTitle, userInputContent, userInputDate, userInputName, rvNames, selectedStatus, null))
+//                val userInputName = etName.text.toString()
+                val userInputDate = date
+                clientTaskViewModel.update(Task(taskId, userInputTitle, userInputContent, userInputDate, null, rvNames, selectedStatus))
                 etTitle.text.clear()
                 etContent.text.clear()
-                etName.text.clear()
+//                etName.text.clear()
                 val intent = Intent(this@ClientUpdateActivity, ClientMainActivity::class.java)
                 startActivity(intent)
                 finish()

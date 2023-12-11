@@ -38,7 +38,7 @@ class MyViewHolder(val binding: ListItemClientBinding): RecyclerView.ViewHolder(
     fun bind(task: Task, clickListener: (Task) -> Unit) {
         binding.tvTitle.text = task.title
         binding.tvDate.text = task.createDateFormat
-        binding.tvName.text = task.username
+        binding.tvName.text = task.userId
         binding.tvStatus.text = task.status
         when(binding.tvStatus.text){
             "Pending" -> binding.tvStatus.setTextColor(ContextCompat.getColor(context, R.color.yellow_pending))
