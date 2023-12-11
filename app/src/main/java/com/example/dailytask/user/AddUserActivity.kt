@@ -7,11 +7,11 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.dailytask.MainActivity
 import com.example.dailytask.R
-import com.example.dailytask.admin.AdminDetailActivity
 import com.example.dailytask.databinding.ActivityAddUserBinding
 import com.example.dailytask.db.AppDatabase
 import com.example.dailytask.db.User
@@ -48,8 +48,8 @@ class AddUserActivity : AppCompatActivity() {
         }
     }
 
-    private fun spinner(){
-        var spinner = binding.role
+    private fun spinner() {
+        val spinner = binding.role
 
         ArrayAdapter.createFromResource(
             this@AddUserActivity,
@@ -67,27 +67,66 @@ class AddUserActivity : AppCompatActivity() {
                 position: Int,
                 id: Long
             ) {
-                val role = parent?.getItemAtPosition(position).toString()
+                val role = parent!!.getItemAtPosition(position).toString()
+
+                val userIdEditText: EditText = binding.userId
+                var newUserId = ""
+
+                viewModel.getLastUserIdByRole(role).observe(this@AddUserActivity) { latestUserId ->
+                    newUserId = when {
+                        latestUserId != null -> {
+                            val numericPart = latestUserId.substring(1).toIntOrNull() ?: 0
+                            val increment = numericPart + 1
+                            "${role[0]}${increment.toString().padStart(3, '0')}"
+                        }
+                        else -> "${role[0]}001"
+                    }
+                    userIdEditText.setText(newUserId)
+                }
+
                 binding.btnAddUser.setOnClickListener {
                     binding.apply {
-                        if(binding.username.text.isNullOrEmpty()){
-                            Toast.makeText(this@AddUserActivity, "Username is null",Toast.LENGTH_SHORT).show()
-                        }else{
-                            val userName = binding.username.text
-                            var password = ""
-                            if(role == "Client"){
-                                password = userName.toString() + "123C"
-                            }else{
-                                password = userName.toString() + "123A"
-                            }
-                            viewModel.insert(User(userName.toString(), password, role))
+                        if (!binding.username.text.isNullOrEmpty()) {
+//                            viewModel.getLastUserIdByRole(role).observe(this@AddUserActivity) { latestUserId ->
+//                                val newUserId = when {
+//                                    latestUserId != null -> {
+//                                        val numericPart = latestUserId.removePrefix(role[0].toString()).toIntOrNull() ?: 0
+//                                        val increment = numericPart + 1
+//                                        "${role[0]}${increment.toString().padStart(3, '0')}"
+//                                    }
+//                                    else -> "${role[0]}001"
+//                                }
 
-                            val intent = Intent(
+                                val userName = binding.username.text
+                                var password = ""
+                                if (role == "Client") {
+                                    password = userName.toString() + "123C"
+                                } else {
+                                    password = userName.toString() + "123A"
+                                }
+                                viewModel.insert(
+                                    User(
+                                        userId = newUserId,
+                                        userName = userName.toString(),
+                                        password = password,
+                                        role = role
+                                    )
+                                )
+
+                                val intent = Intent(
+                                    this@AddUserActivity,
+                                    MainActivity::class.java
+                                )
+                                startActivity(intent)
+                                finish()
+                            }
+
+                        else{
+                            Toast.makeText(
                                 this@AddUserActivity,
-                                MainActivity::class.java
-                            )
-                            startActivity(intent)
-                            finish()
+                                "Username is null",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
                 }

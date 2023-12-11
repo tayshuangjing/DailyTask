@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
                 val password = binding.password.text.toString()
                 Log.d("User", "$name $password")
                 lifecycleScope.launch {
-                    val matchName = userViewModel.getUserByName(name).firstOrNull()
+                    val matchName = userViewModel.getUserByID(name).firstOrNull()
                     Log.d("Match user", matchName.toString())
                     if(matchName!=null){
                         if(matchName.password == password){

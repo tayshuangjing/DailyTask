@@ -14,13 +14,12 @@ interface UserDao {
     @Delete
     suspend fun delete(user: User): Int
 
-    @Query("UPDATE user_table SET role = :role WHERE username = :username")
-    suspend fun updateRoleStatus(username: String, role: String)
-
-    @Query("SELECT * FROM user_table ORDER BY username ASC")
+    @Query("SELECT * FROM user_table ORDER BY userId ASC")
     fun getAllUsers(): Flow<List<User>>
 
-    @Query("SELECT * FROM user_table WHERE username = :username")
-    fun getUserByName(username: String): Flow<User?>
+    @Query("SELECT * FROM user_table WHERE userId = :userId")
+    fun getUserByID(userId: String): Flow<User?>
 
+    @Query("SELECT userId FROM user_table WHERE role = :role ORDER BY userId DESC LIMIT 1")
+    fun getLastUserIdByRole(role: String): String?
 }

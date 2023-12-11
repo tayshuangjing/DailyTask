@@ -93,7 +93,7 @@ class AdminTaskViewHolder(
     fun bind(task: Task) {
         binding.tvTitle.text = task.title
         binding.tvDate.text = task.createDateFormat
-        binding.tvName.text = task.username
+//        binding.tvName.text = task.username
         binding.tvComplete.text = task.status
         updateColor()
     }

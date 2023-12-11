@@ -33,7 +33,7 @@ class AdminTaskViewModel(private val repository: TaskRepository): ViewModel() {
                 task.title!!.contains(query,ignoreCase = true)
 //                ||task.content!!.contains(query,ignoreCase = true)
                 ||task.createDateFormat!!.contains(query,ignoreCase = true)
-                ||task.username!!.contains(query,ignoreCase = true)
+//                ||task.username!!.contains(query,ignoreCase = true)
             }
             emit(filteredList)
         }

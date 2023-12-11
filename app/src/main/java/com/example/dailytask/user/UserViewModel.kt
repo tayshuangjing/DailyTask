@@ -3,6 +3,8 @@ package com.example.dailytask.user
 import android.app.Application
 import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
@@ -11,8 +13,10 @@ import com.example.dailytask.admin.AdminTaskViewModel
 import com.example.dailytask.db.Task
 import com.example.dailytask.db.User
 import com.example.dailytask.db.UserRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class UserViewModel(private val repository: UserRepository): ViewModel(){
     val user = repository.allUser
@@ -21,6 +25,7 @@ class UserViewModel(private val repository: UserRepository): ViewModel(){
             repository.insert(user)
         }
 
+
     fun getAllUsers() = liveData {
         user.collect{
             emit(it)
@@ -28,9 +33,21 @@ class UserViewModel(private val repository: UserRepository): ViewModel(){
         }
     }
 
-    fun getUserByName(userName: String): Flow<User?> {
-        return repository.getUserByName(userName)
+    fun getUserByID(userId: String): Flow<User?> {
+        return repository.getUserByID(userId)
     }
+
+    fun getLastUserIdByRole(role: String): LiveData<String?> {
+        val result = MutableLiveData<String?>()
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                val userId = repository.getLastUserIdByRole(role)
+                result.postValue(userId)
+            }
+        }
+        return result
+    }
+
 
     fun delete(user: User) = viewModelScope.launch {
         val deleteUser = repository.delete(user)
