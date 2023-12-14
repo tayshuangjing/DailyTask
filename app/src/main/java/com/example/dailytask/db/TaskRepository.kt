@@ -1,6 +1,7 @@
 package com.example.dailytask.db
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
 
@@ -22,6 +23,11 @@ class TaskRepository(private val taskDao: TaskDao) {
 
     suspend fun updateTaskStatus(taskId: Int, newStatus: String){
         taskDao.updateTaskStatus(taskId,newStatus)
+    }
+
+    fun getTasksForUser(userId: String): LiveData<List<Task>> {
+        Log.d("DAO", userId)
+        return taskDao.getTasksForUser(userId)
     }
 
     fun getTaskById(taskId: Int): Flow<Task?> {

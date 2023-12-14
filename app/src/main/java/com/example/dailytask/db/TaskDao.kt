@@ -1,5 +1,6 @@
 package com.example.dailytask.db
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
@@ -29,4 +30,6 @@ interface TaskDao {
     @Query("UPDATE task_table SET status = :newStatus WHERE taskId = :taskId")
     suspend fun updateTaskStatus(taskId: Int, newStatus: String)
 
+    @Query("SELECT * FROM task_table WHERE collaborator LIKE (SELECT '%' || username || '%' FROM user_table WHERE userId = :userId)")
+    fun getTasksForUser(userId: String): LiveData<List<Task>>
 }

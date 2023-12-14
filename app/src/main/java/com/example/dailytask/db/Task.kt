@@ -3,17 +3,18 @@ package com.example.dailytask.db
 import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-@Entity(tableName = "task_table")
+@Entity(tableName = "task_table",foreignKeys = [ForeignKey(entity = User::class, parentColumns = ["userId"], childColumns = ["userId"])])
 @Parcelize
 data class Task(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "taskId")
-    val taskId: Int?,
+    val taskId: Int = 0,
     @ColumnInfo(name = "title")
     var title: String?,
     @ColumnInfo(name = "content")

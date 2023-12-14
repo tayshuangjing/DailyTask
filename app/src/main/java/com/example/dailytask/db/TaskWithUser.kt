@@ -4,10 +4,12 @@ import androidx.room.Embedded
 import androidx.room.Relation
 
 data class TaskWithUser (
-    @Embedded val task: Task,
+    @Embedded val user: User,
     @Relation(
         parentColumn = "userId",
         entityColumn = "userId"
     )
-    val user: User
-)
+    val task: List<Task>
+){
+
+}

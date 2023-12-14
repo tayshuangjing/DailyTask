@@ -107,7 +107,7 @@ class AddUserActivity : AppCompatActivity() {
                                 viewModel.insert(
                                     User(
                                         userId = newUserId,
-                                        userName = userName.toString(),
+                                        username = userName.toString(),
                                         password = password,
                                         role = role
                                     )

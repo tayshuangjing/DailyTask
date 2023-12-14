@@ -8,20 +8,26 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.dailytask.R
 import com.example.dailytask.databinding.ActivityDetailAdminBinding
 import com.example.dailytask.db.AppDatabase
 import com.example.dailytask.db.TaskRepository
+import com.example.dailytask.db.TaskWithUser
+import com.example.dailytask.db.UserRepository
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
 class AdminDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailAdminBinding
-    private lateinit var repository: TaskRepository
+    private lateinit var taskRepository: TaskRepository
+    private lateinit var userRepository: UserRepository
     private lateinit var viewModel: AdminTaskViewModel
     private lateinit var spinner: Spinner
-    private var selectedId: Int = 0
+    private var taskId: Int = 0
+    private var userId: String = ""
     private var currentStatus: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,12 +35,19 @@ class AdminDetailActivity : AppCompatActivity() {
         binding = ActivityDetailAdminBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val dao = AppDatabase.getDatabase(application).taskDao()
-        repository = TaskRepository(dao)
-        viewModel = ViewModelProvider(this, AdminTaskViewModelFactory(repository)).get(AdminTaskViewModel::class.java)
+        val taskDao = AppDatabase.getDatabase(application).taskDao()
+        taskRepository = TaskRepository(taskDao)
+        viewModel = ViewModelProvider(this, AdminTaskViewModelFactory(taskRepository)).get(AdminTaskViewModel::class.java)
 
-        selectedId = intent.getIntExtra("selectedId", 0)
-        Log.d("TaskDetail", "Received ID:$selectedId")
+
+        val userDao = AppDatabase.getDatabase(application).userDao()
+        userRepository = UserRepository(userDao)
+
+
+        taskId = intent.getIntExtra("taskId", 0)
+        userId = intent.getStringExtra("userId").toString()
+        Log.d("TaskDetail", "Received task ID:$taskId")
+        Log.d("TaskDetail", "Received user ID:$userId")
 
         spinner()
     }
@@ -44,13 +57,16 @@ class AdminDetailActivity : AppCompatActivity() {
         spinner = binding.spinner
 
         lifecycleScope.launch {
-            viewModel.getTaskById(selectedId).collect { task ->
+            viewModel.getTaskById(taskId).collect { task ->
                 Log.d("TaskDetail", "Collect block executed. Task:$task")
                 if (task != null) {
                     Log.d("TaskDetail", "Task is not null. Setting values.")
                     binding.tvTitle.text = task.title
                     binding.tvContent.text = task.content
-//                    binding.tvName.text = task.username
+                    Log.d("username", task.userId.toString())
+                    val username = userRepository.getUserByID(task.userId.toString()).firstOrNull()
+                    Log.d("username", username.toString())
+                    binding.tvName.text = username!!.username
                     binding.tvDate.text = task.createDateFormat
                     currentStatus = task.status.toString()
 
@@ -75,11 +91,12 @@ class AdminDetailActivity : AppCompatActivity() {
                         ) {
                             val selectedStatus = parent?.getItemAtPosition(position).toString()
                             binding.btnDone.setOnClickListener {
-                                viewModel.updateTaskStatus(selectedId, selectedStatus)
+                                viewModel.updateTaskStatus(taskId, selectedStatus)
                                 val intent = Intent(
                                     this@AdminDetailActivity,
                                     AdminMainActivity::class.java
                                 )
+                                intent.putExtra("userId",userId)
                                 startActivity(intent)
                                 finish()
                             }

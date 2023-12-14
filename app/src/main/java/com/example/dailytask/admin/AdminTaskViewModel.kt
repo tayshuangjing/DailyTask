@@ -2,16 +2,21 @@ package com.example.dailytask.admin
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.example.dailytask.db.Task
 import com.example.dailytask.db.TaskRepository
+import com.example.dailytask.db.TaskWithUser
+import com.example.dailytask.db.UserRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
+private lateinit var userRepository: UserRepository
 class AdminTaskViewModel(private val repository: TaskRepository): ViewModel() {
 
     val task = repository.allTasks
@@ -25,6 +30,10 @@ class AdminTaskViewModel(private val repository: TaskRepository): ViewModel() {
             emit(it)
             Log.d("Task",it.toString())
         }
+    }
+
+    fun getTaskByUser(username: String): LiveData<List<Task>> {
+        return repository.getTasksForUser(username)
     }
 
     fun searchTask(query:String):LiveData<List<Task>>{

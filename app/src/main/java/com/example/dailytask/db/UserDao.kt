@@ -1,9 +1,11 @@
 package com.example.dailytask.db
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Transaction
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -22,4 +24,6 @@ interface UserDao {
 
     @Query("SELECT userId FROM user_table WHERE role = :role ORDER BY userId DESC LIMIT 1")
     fun getLastUserIdByRole(role: String): String?
+
+
 }

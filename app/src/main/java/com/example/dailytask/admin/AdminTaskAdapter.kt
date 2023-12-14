@@ -36,7 +36,6 @@ class AdminTaskAdapter(private val clickListener: (Task) -> Unit) :
     fun updateList(newList: List<Task>) {
         taskList.clear()
         taskList.addAll(newList)
-        Log.d("Task", newList.toString())
         notifyDataSetChanged()
     }
 }
@@ -47,6 +46,7 @@ class AdminTaskViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     init {
+
         updateColor()
         binding.cardView.setOnTouchListener { _, event ->
             when (event.action) {

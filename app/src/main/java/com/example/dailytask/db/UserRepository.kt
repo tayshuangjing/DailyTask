@@ -1,6 +1,7 @@
 package com.example.dailytask.db
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
@@ -10,7 +11,7 @@ class UserRepository(private val userDao: UserDao) {
     val allUser = userDao.getAllUsers()
 
     suspend fun insert(user: User){
-        Log.d("User add", "${user.userId} and ${user.userName}" )
+        Log.d("User add", "${user.userId} and ${user.username}" )
         userDao.insert(user)
     }
 
@@ -24,6 +25,7 @@ class UserRepository(private val userDao: UserDao) {
             Log.d("UserRepository", "User result: $user")
         }
     }
+
 suspend fun getLastUserIdByRole(role: String): String? {
             return withContext(Dispatchers.IO) {
                 userDao.getLastUserIdByRole(role)

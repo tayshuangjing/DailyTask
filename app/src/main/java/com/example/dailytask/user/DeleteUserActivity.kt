@@ -58,7 +58,7 @@ class DeleteUserActivity : AppCompatActivity() {
     }
 
     private fun listItemClicked(selectedUser: User) {
-        Log.d("Clicked", "${selectedUser.userName} is clicked")
+        Log.d("Clicked", "${selectedUser.username} is clicked")
         viewModel.delete(selectedUser)
     }
 }

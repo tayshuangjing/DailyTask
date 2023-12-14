@@ -38,7 +38,7 @@ class UserViewHolder(
     private val clickListener: (User) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(user: User){
-        binding.tvUser.text = user.userName
+        binding.tvUser.text = user.username
         binding.imageButton.setOnClickListener{
             clickListener(user)
         }

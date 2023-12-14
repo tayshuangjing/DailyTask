@@ -9,9 +9,9 @@ import androidx.room.PrimaryKey
 data class User(
     @PrimaryKey
     @ColumnInfo(name = "userId")
-    var userId: String = "0001",
+    var userId: String,
     @ColumnInfo(name = "username")
-    var userName: String,
+    var username: String,
     @ColumnInfo(name = "password")
     var password: String?,
     @ColumnInfo(name = "role")

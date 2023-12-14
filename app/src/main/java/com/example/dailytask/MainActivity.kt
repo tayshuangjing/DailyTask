@@ -56,8 +56,14 @@ class MainActivity : AppCompatActivity() {
                             binding.username.text.clear()
                             binding.password.text.clear()
                             when(matchName.role){
-                                "Admin" -> startActivity(adminIntent)
-                                "Client" -> startActivity(clientIntent)
+                                "Admin" -> {
+                                    adminIntent.putExtra("userId", name)
+                                    startActivity(adminIntent)
+                                }
+                                "Client" -> {
+                                    clientIntent.putExtra("userId", name)
+                                    startActivity(clientIntent)
+                                }
                                 else -> Toast.makeText(this@MainActivity,"Invalid Role", Toast.LENGTH_SHORT).show()
                             }
                         }else{

@@ -16,6 +16,8 @@ import com.example.dailytask.db.AppDatabase
 import com.example.dailytask.db.TaskRepository
 import com.example.dailytask.db.UserRepository
 import com.example.dailytask.user.UserViewModel
+import com.example.dailytask.user.UserViewModelFactory
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
 class AdminMainActivity : AppCompatActivity() {
@@ -36,7 +38,14 @@ class AdminMainActivity : AppCompatActivity() {
         taskViewModel = ViewModelProvider(this, AdminTaskViewModelFactory(taskRepository)
         ).get(AdminTaskViewModel::class.java)
 
-        initRecyclerView()
+        userRepository = UserRepository(Room.databaseBuilder(applicationContext,AppDatabase::class.java, "user_database").build().userDao())
+        userViewModel = ViewModelProvider(this, UserViewModelFactory(userRepository)
+        ).get(UserViewModel::class.java)
+
+        username = intent.getStringExtra("userId").toString()
+        Log.d("userId", username)
+
+        initRecyclerView(username)
 
         binding.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener,
             android.widget.SearchView.OnQueryTextListener {
@@ -56,24 +65,29 @@ class AdminMainActivity : AppCompatActivity() {
             }
         })
     }
-    private fun initRecyclerView() {
+    private fun initRecyclerView(username: String) {
         binding.adminRecyclerView.setHasFixedSize(true)
         binding.adminRecyclerView.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
         adapter = AdminTaskAdapter { selectedId: Task -> listItemClicked(selectedId) }
         binding.adminRecyclerView.adapter = adapter
-        displayTaskList()
+        displayTaskList(username)
     }
 
-    private fun displayTaskList() {
-        taskViewModel.getAllTasks().observe(this, Observer {task ->
-            adapter.updateList(task)
+    private fun displayTaskList(username: String) {
+//        taskViewModel.getAllTasks().observe(this, Observer {task ->
+//            adapter.updateList(task)
+//            Log.d("Task", task.toString())
+//        })
+        taskViewModel.getTaskByUser(username).observe(this, Observer {
+            task -> adapter.updateList(task)
             Log.d("Task", task.toString())
         })
     }
 
-    private fun listItemClicked(selectedId: Task) {
+    private fun listItemClicked(taskId: Task) {
         val intent = Intent(this, AdminDetailActivity::class.java)
-        intent.putExtra("selectedId",selectedId.taskId)
+        intent.putExtra("taskId",taskId.taskId)
+        intent.putExtra("userId", username)
         startActivity(intent)
         finish()
     }
