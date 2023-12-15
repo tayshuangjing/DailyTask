@@ -19,6 +19,7 @@ class ClientMainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainClientBinding
     private lateinit var clientTaskViewModel: ClientTaskViewModel
     private lateinit var adapter: MyRecyclerViewAdapter
+    private var userId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,8 +33,13 @@ class ClientMainActivity : AppCompatActivity() {
 
         initRecyclerView()
 
+        userId = intent.getStringExtra("userId").toString()
+        Log.d("useridmain", userId)
+
         binding.btAdd.setOnClickListener {
-            startActivity(Intent(this@ClientMainActivity, ClientAddActivity::class.java))
+            val clientIntent = Intent(this@ClientMainActivity, ClientAddActivity::class.java)
+            clientIntent.putExtra("userId",userId)
+            startActivity(clientIntent)
         }
     }
 

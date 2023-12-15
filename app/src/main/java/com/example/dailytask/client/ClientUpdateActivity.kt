@@ -70,7 +70,7 @@ class ClientUpdateActivity : AppCompatActivity() {
                         etDate.setText(formattedDate)
                         rvNames = (task.collaborator ?: emptyList()).toMutableList()
                         userViewModel.getAllUsers().observe(this@ClientUpdateActivity) { list ->
-                            existingNames = list.map { it.userName }.toMutableList()
+                            existingNames = list.map { it.username }.toMutableList()
                             existingNames.removeAll(rvNames)
                             adapter = ArrayAdapter(this@ClientUpdateActivity, android.R.layout.simple_dropdown_item_1line, existingNames)
                             binding.etCol.setAdapter(adapter)

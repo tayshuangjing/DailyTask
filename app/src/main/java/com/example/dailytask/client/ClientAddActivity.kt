@@ -38,6 +38,7 @@ class ClientAddActivity : AppCompatActivity() {
     private lateinit var rvNames: MutableList<String>
     private val calendar = Calendar.getInstance()
     private var date = LocalDateTime.now()
+    private lateinit var userId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +52,8 @@ class ClientAddActivity : AppCompatActivity() {
         val userRepository = UserRepository(database.userDao())
         userViewModel = ViewModelProvider(this, UserViewModelFactory(userRepository)).get(UserViewModel::class.java)
 
+        userId = intent.getStringExtra("userId").toString()
+        Log.d("useridadd", userId)
         //init recycler view
         rvNames = mutableListOf()
         existingNames = mutableListOf()
@@ -68,7 +71,7 @@ class ClientAddActivity : AppCompatActivity() {
         //init autocomplete text view
         //        existingNames = clientTaskViewModel.existingNames
         userViewModel.getAllUsers().observe(this) { list ->
-            existingNames = list.map { it.userName }.toMutableList()
+            existingNames = list.map { it.username }.toMutableList()
             adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, existingNames)
             binding.etCol.setAdapter(adapter)
         }
@@ -81,7 +84,6 @@ class ClientAddActivity : AppCompatActivity() {
             rvCollaboratorAdapter.notifyDataSetChanged()
         }
 
-
         binding.btSave.setOnClickListener {
             save()
         }
@@ -89,6 +91,8 @@ class ClientAddActivity : AppCompatActivity() {
         binding.btCancel.setOnClickListener {
             cancel()
         }
+
+
     }
 
     private fun showCalendarPicker() {
@@ -125,7 +129,13 @@ class ClientAddActivity : AppCompatActivity() {
 //                val userInputName = etName.text.toString()
                 val userInputDate = date
                 val status = "Pending"
-                clientTaskViewModel.insert(Task(null, userInputTitle, userInputContent, userInputDate, null, rvNames, status))
+                clientTaskViewModel.insert(Task(
+                    title = userInputTitle,
+                    content = userInputContent,
+                    date = userInputDate,
+                    userId = userId,
+                    collaborator = rvNames,
+                    status = status))
                 etTitle.text.clear()
                 etContent.text.clear()
 //                etName.text.clear()
