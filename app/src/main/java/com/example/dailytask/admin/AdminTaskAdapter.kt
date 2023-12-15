@@ -13,6 +13,8 @@ import com.example.dailytask.R
 import com.example.dailytask.databinding.ActivityMainAdminBinding
 import com.example.dailytask.databinding.ListItemBinding
 import com.example.dailytask.db.Task
+import com.example.dailytask.db.UserRepository
+import kotlinx.coroutines.flow.firstOrNull
 
 
 private val taskList = ArrayList<Task>()
@@ -38,13 +40,13 @@ class AdminTaskAdapter(private val clickListener: (Task) -> Unit) :
         taskList.addAll(newList)
         notifyDataSetChanged()
     }
+
 }
 
 class AdminTaskViewHolder(
     private val binding: ListItemBinding,
     private val clickListener: (Task) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
-
     init {
 
         updateColor()

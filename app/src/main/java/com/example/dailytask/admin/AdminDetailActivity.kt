@@ -26,6 +26,7 @@ class AdminDetailActivity : AppCompatActivity() {
     private lateinit var userRepository: UserRepository
     private lateinit var viewModel: AdminTaskViewModel
     private lateinit var spinner: Spinner
+
     private var taskId: Int = 0
     private var userId: String = ""
     private var currentStatus: String = ""

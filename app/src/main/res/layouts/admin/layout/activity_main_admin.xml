@@ -21,22 +21,33 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Daily Task Scheduler"
-            android:textSize="36dp"
+            android:text="@string/daily_task_scheduler"
+            android:textSize="36sp"
             android:textColor="@color/white"
             android:textStyle="bold"
             />
 
     </androidx.appcompat.widget.Toolbar>
 
-    <SearchView
-        android:id="@+id/searchView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:iconifiedByDefault="false"
-        android:queryHint="Search Here"
-        />
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/option"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+
+        <SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:iconifiedByDefault="false"
+            android:queryHint="Search Here"
+            />
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/admin_recyclerView"

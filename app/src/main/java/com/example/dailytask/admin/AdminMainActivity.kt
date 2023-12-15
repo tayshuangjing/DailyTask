@@ -4,12 +4,16 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
+import com.example.dailytask.R
 import com.example.dailytask.databinding.ActivityMainAdminBinding
 import com.example.dailytask.db.Task
 import com.example.dailytask.db.AppDatabase
@@ -28,7 +32,9 @@ class AdminMainActivity : AppCompatActivity() {
     private lateinit var userViewModel: UserViewModel
     private lateinit var userRepository: UserRepository
 
-    private var username: String = ""
+    private var userId: String = ""
+    private var currentOption: String = ""
+    private var selectedOption: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainAdminBinding.inflate(layoutInflater)
@@ -42,10 +48,37 @@ class AdminMainActivity : AppCompatActivity() {
         userViewModel = ViewModelProvider(this, UserViewModelFactory(userRepository)
         ).get(UserViewModel::class.java)
 
-        username = intent.getStringExtra("userId").toString()
-        Log.d("userId", username)
+        userId = intent.getStringExtra("userId").toString()
+        Log.d("userId", userId)
 
-        initRecyclerView(username)
+        initRecyclerView(userId)
+
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.option,
+            android.R.layout.simple_spinner_dropdown_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.option.adapter = adapter
+
+            val position = adapter.getPosition(currentOption)
+            binding.option.setSelection(position)
+        }
+
+        binding.option.onItemSelectedListener = object :AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                selectedOption = parent?.getItemAtPosition(position).toString()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+        }
 
         binding.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener,
             android.widget.SearchView.OnQueryTextListener {
@@ -56,7 +89,7 @@ class AdminMainActivity : AppCompatActivity() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 newText?.let {
                     lifecycleScope.launch {
-                        taskViewModel.searchTask(it).observe(this@AdminMainActivity){
+                        taskViewModel.searchTask(selectedOption, it, userId).observe(this@AdminMainActivity){
                                 filteredList -> adapter.updateList(filteredList)
                         }
                     }
@@ -87,8 +120,7 @@ class AdminMainActivity : AppCompatActivity() {
     private fun listItemClicked(taskId: Task) {
         val intent = Intent(this, AdminDetailActivity::class.java)
         intent.putExtra("taskId",taskId.taskId)
-        intent.putExtra("userId", username)
+        intent.putExtra("userId", userId)
         startActivity(intent)
-        finish()
     }
 }
