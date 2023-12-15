@@ -70,7 +70,7 @@ class AddUserActivity : AppCompatActivity() {
             ) {
                 val role = parent!!.getItemAtPosition(position).toString()
 
-                val userIdEditText: TextView = binding.userId
+//                val userIdEditText: TextView = binding.userId
                 var newUserId = ""
 
                 viewModel.getLastUserIdByRole(role).observe(this@AddUserActivity) { latestUserId ->
@@ -82,7 +82,7 @@ class AddUserActivity : AppCompatActivity() {
                         }
                         else -> "${role[0]}001"
                     }
-                    userIdEditText.setText(newUserId)
+//                    userIdEditText.setText(newUserId)
                 }
 
                 binding.btnAddUser.setOnClickListener {
@@ -99,6 +99,7 @@ class AddUserActivity : AppCompatActivity() {
 //                                }
 
                                 val userName = binding.username.text
+
                                 var password = ""
                                 if (role == "Client") {
                                     password = userName.toString() + "123C"

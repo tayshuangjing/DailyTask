@@ -22,20 +22,20 @@
         android:gravity="center"
         android:padding="50dp">
 
-        <TextView
-            android:padding="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:text="UserID" />
+<!--        <TextView-->
+<!--            android:padding="15dp"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textSize="20dp"-->
+<!--            android:text="UserID" />-->
 
-        <TextView
-            android:id="@+id/userId"
-            android:padding="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:text="A001" />
+<!--        <TextView-->
+<!--            android:id="@+id/userId"-->
+<!--            android:padding="15dp"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textSize="20dp"-->
+<!--            android:text="A001" />-->
 
         <TextView
             android:padding="15dp"
