@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.dailytask.MainActivity
@@ -69,7 +70,7 @@ class AddUserActivity : AppCompatActivity() {
             ) {
                 val role = parent!!.getItemAtPosition(position).toString()
 
-                val userIdEditText: EditText = binding.userId
+                val userIdEditText: TextView = binding.userId
                 var newUserId = ""
 
                 viewModel.getLastUserIdByRole(role).observe(this@AddUserActivity) { latestUserId ->
@@ -124,7 +125,7 @@ class AddUserActivity : AppCompatActivity() {
                         else{
                             Toast.makeText(
                                 this@AddUserActivity,
-                                "Username is null",
+                                "Username should not be empty",
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
