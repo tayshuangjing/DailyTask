@@ -34,12 +34,14 @@ class ClientUpdateActivity : AppCompatActivity() {
     private lateinit var clientTaskViewModel: ClientTaskViewModel
     private lateinit var userViewModel: UserViewModel
     private lateinit var selectedStatus: String
-    private lateinit var rvCollaboratorAdapter: ClientColAdapter
-    private lateinit var adapter: ArrayAdapter<String>
-    private lateinit var rvNames: MutableList<String>
-    private lateinit var existingNames: MutableList<String>
+//    private lateinit var rvCollaboratorAdapter: ClientColAdapter
+//    private lateinit var adapter: ArrayAdapter<String>
+//    private lateinit var rvNames: MutableList<String>
+//    private lateinit var existingNames: MutableList<String>
     private val calendar = Calendar.getInstance()
     private var date = LocalDateTime.now()
+
+    private val rvNames = mutableListOf("John", "Jane", "Alice", "Bob", "Charlie")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,8 +56,8 @@ class ClientUpdateActivity : AppCompatActivity() {
         userViewModel = ViewModelProvider(this, UserViewModelFactory(userRepository)).get(UserViewModel::class.java)
 
         val taskId = intent.getIntExtra("task_id", 0)
-        rvNames = mutableListOf()
-        existingNames = mutableListOf()
+//        rvNames = mutableListOf()
+//        existingNames = mutableListOf()
 
         //init data
         lifecycleScope.launch {
@@ -67,15 +69,15 @@ class ClientUpdateActivity : AppCompatActivity() {
                         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.getDefault())
                         val formattedDate = formatter.format(task.date)
                         etDate.setText(formattedDate)
-                        rvNames = (task.collaborator ?: emptyList()).toMutableList()
-                        userViewModel.getAllUsers().observe(this@ClientUpdateActivity) { list ->
-                            existingNames = list.map { it.username }.toMutableList()
-                            existingNames.removeAll(rvNames)
-                            adapter = ArrayAdapter(this@ClientUpdateActivity, android.R.layout.simple_dropdown_item_1line, existingNames)
-                            binding.etCol.setAdapter(adapter)
-                        }
+//                        rvNames = (task.collaborator ?: emptyList()).toMutableList()
+//                        userViewModel.getAllUsers().observe(this@ClientUpdateActivity) { list ->
+//                            existingNames = list.map { it.username }.toMutableList()
+//                            existingNames.removeAll(rvNames)
+//                            adapter = ArrayAdapter(this@ClientUpdateActivity, android.R.layout.simple_dropdown_item_1line, existingNames)
+//                            binding.etCol.setAdapter(adapter)
+//                        }
 
-                        initRecyclerView()
+//                        initRecyclerView()
                     }
                 }
             }
@@ -88,14 +90,14 @@ class ClientUpdateActivity : AppCompatActivity() {
         }
 
         //init autocomplete text view
-        binding.etCol.setOnItemClickListener { _, _, position, _ ->
-            val selectedName = adapter.getItem(position).toString()
-            rvNames.add(selectedName)
-            existingNames.remove(selectedName)
-            adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, existingNames)
-            binding.etCol.setAdapter(adapter)
-            rvCollaboratorAdapter.notifyDataSetChanged()
-        }
+//        binding.etCol.setOnItemClickListener { _, _, position, _ ->
+//            val selectedName = adapter.getItem(position).toString()
+//            rvNames.add(selectedName)
+//            existingNames.remove(selectedName)
+//            adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, existingNames)
+//            binding.etCol.setAdapter(adapter)
+//            rvCollaboratorAdapter.notifyDataSetChanged()
+//        }
 
         //init spinner
         val status = resources.getStringArray(R.array.task_status)
@@ -143,20 +145,28 @@ class ClientUpdateActivity : AppCompatActivity() {
         dialogPickerDialog.show()
     }
 
-    private fun initRecyclerView() {
-        rvCollaboratorAdapter = ClientColAdapter(rvNames, {selectedItem: String -> listItemClicked(selectedItem)})
-        binding.rvCollaborator.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        binding.rvCollaborator.adapter = rvCollaboratorAdapter
-    }
+//    private fun initRecyclerView() {
+//        rvCollaboratorAdapter = ClientColAdapter(rvNames, {selectedItem: String -> listItemClicked(selectedItem)})
+//        binding.rvCollaborator.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+//        binding.rvCollaborator.adapter = rvCollaboratorAdapter
+//    }
 
     private fun update(taskId: Int, selectedStatus: String) {
         binding.apply {
-            if (!etTitle.text.isEmpty() && !etContent.text.isEmpty() && !rvNames.isEmpty()){
+//            if (!etTitle.text.isEmpty() && !etContent.text.isEmpty() && !rvNames.isEmpty()){
+            if (!etTitle.text.isEmpty() && !etContent.text.isEmpty()){
                 val userInputTitle = etTitle.text.toString()
                 val userInputContent = etContent.text.toString()
 //                val userInputName = etName.text.toString()
                 val userInputDate = date
-                clientTaskViewModel.update(Task(taskId, userInputTitle, userInputContent, userInputDate, null, rvNames, selectedStatus))
+                clientTaskViewModel.update(Task(
+                    taskId,
+                    userInputTitle,
+                    userInputContent,
+                    userInputDate,
+                    null,
+                    rvNames,
+                    selectedStatus))
                 etTitle.text.clear()
                 etContent.text.clear()
 //                etName.text.clear()
@@ -176,11 +186,11 @@ class ClientUpdateActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun listItemClicked(selectedItem: String) {
-        rvNames.remove(selectedItem)
-        existingNames.add(selectedItem)
-        adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, existingNames)
-        binding.etCol.setAdapter(adapter)
-        rvCollaboratorAdapter.notifyDataSetChanged()
-    }
+//    private fun listItemClicked(selectedItem: String) {
+//        rvNames.remove(selectedItem)
+//        existingNames.add(selectedItem)
+//        adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, existingNames)
+//        binding.etCol.setAdapter(adapter)
+//        rvCollaboratorAdapter.notifyDataSetChanged()
+//    }
 }
