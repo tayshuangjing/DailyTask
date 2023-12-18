@@ -8,15 +8,17 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import androidx.lifecycle.LiveData
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dailytask.R
 import com.example.dailytask.databinding.ActivityDetailAdminBinding
 import com.example.dailytask.db.AppDatabase
 import com.example.dailytask.db.TaskRepository
-import com.example.dailytask.db.TaskWithUser
 import com.example.dailytask.db.UserRepository
+import com.example.dailytask.user.UserViewModel
+import com.example.dailytask.user.UserViewModelFactory
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
@@ -24,8 +26,12 @@ class AdminDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailAdminBinding
     private lateinit var taskRepository: TaskRepository
     private lateinit var userRepository: UserRepository
-    private lateinit var viewModel: AdminTaskViewModel
+    private lateinit var taskViewModel: AdminTaskViewModel
+    private lateinit var userViewModel: UserViewModel
     private lateinit var spinner: Spinner
+//    private lateinit var adapter: ArrayAdapter<String>
+//    private lateinit var existingNames: MutableList<String>
+//    private lateinit var rvNames: MutableList<String>
 
     private var taskId: Int = 0
     private var userId: String = ""
@@ -38,11 +44,17 @@ class AdminDetailActivity : AppCompatActivity() {
 
         val taskDao = AppDatabase.getDatabase(application).taskDao()
         taskRepository = TaskRepository(taskDao)
-        viewModel = ViewModelProvider(this, AdminTaskViewModelFactory(taskRepository)).get(AdminTaskViewModel::class.java)
+        taskViewModel = ViewModelProvider(this, AdminTaskViewModelFactory(taskRepository)).get(
+            AdminTaskViewModel::class.java
+        )
 
 
         val userDao = AppDatabase.getDatabase(application).userDao()
         userRepository = UserRepository(userDao)
+        userViewModel = ViewModelProvider(
+            this,
+            UserViewModelFactory(userRepository)
+        ).get(UserViewModel::class.java)
 
 
         taskId = intent.getIntExtra("taskId", 0)
@@ -52,13 +64,57 @@ class AdminDetailActivity : AppCompatActivity() {
 
         spinner()
     }
+//
+//        rvNames = mutableListOf()
+//        existingNames = mutableListOf()
+//        initRecyclerView()
+//
+//        userViewModel.getAllUsers().observe(this) { list ->
+//            existingNames = list.map { it.username }.toMutableList()
+//            if (binding.spinnerTeam != null) {
+//                adapter = ArrayAdapter(this@AdminDetailActivity, android.R.layout.simple_spinner_dropdown_item, existingNames)
+//                binding.spinnerTeam.adapter = adapter
+//            }
+//        }
+//
+//        binding.spinnerTeam.onItemSelectedListener = object :
+//            AdapterView.OnItemSelectedListener {
+//            override fun onItemSelected(parent: AdapterView<*>,
+//                                        view: View, position: Int, id: Long) {
+//                val selectedName = parent?.getItemAtPosition(position).toString()
+//                rvNames.add(selectedName)
+//                existingNames.remove(selectedName)
+//                adapter = ArrayAdapter(this@AdminDetailActivity, android.R.layout.simple_spinner_dropdown_item, existingNames)
+//                binding.spinnerTeam.adapter = adapter
+//                rvCollaboratorAdapter.notifyDataSetChanged()
+//            }
+//
+//            override fun onNothingSelected(parent: AdapterView<*>) {
+//                Toast.makeText(applicationContext, "Please select a collaborator.", Toast.LENGTH_LONG).show()
+//            }
+//        }
+//    }
+//
+//    private fun initRecyclerView() {
+//        rvCollaboratorAdapter = AdminColAdapter(rvNames, {selectedItem: String -> listItemClicked(selectedItem)})
+//        binding.rvTeam.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+//        binding.rvTeam.adapter = rvCollaboratorAdapter
+//    }
+//
+//    private fun listItemClicked(selectedItem: String) {
+//        rvNames.remove(selectedItem)
+//        existingNames.add(selectedItem)
+//        adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, existingNames)
+//        binding.spinnerTeam.setAdapter(adapter)
+//        rvCollaboratorAdapter.notifyDataSetChanged()
+//    }
 
     private fun spinner(){
 
-        spinner = binding.spinner
+        spinner = binding.option
 
         lifecycleScope.launch {
-            viewModel.getTaskById(taskId).collect { task ->
+            taskViewModel.getTaskById(taskId).collect { task ->
                 Log.d("TaskDetail", "Collect block executed. Task:$task")
                 if (task != null) {
                     Log.d("TaskDetail", "Task is not null. Setting values.")
@@ -92,7 +148,7 @@ class AdminDetailActivity : AppCompatActivity() {
                         ) {
                             val selectedStatus = parent?.getItemAtPosition(position).toString()
                             binding.btnDone.setOnClickListener {
-                                viewModel.updateTaskStatus(taskId, selectedStatus)
+                                taskViewModel.updateTaskStatus(taskId, selectedStatus)
                                 val intent = Intent(
                                     this@AdminDetailActivity,
                                     AdminMainActivity::class.java

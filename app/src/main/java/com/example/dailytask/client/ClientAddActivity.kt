@@ -7,9 +7,7 @@ import android.os.Bundle
 import android.text.InputType
 import android.util.Log
 import android.widget.ArrayAdapter
-import android.widget.DatePicker
 import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
@@ -20,7 +18,6 @@ import com.example.dailytask.db.TaskRepository
 import com.example.dailytask.db.UserRepository
 import com.example.dailytask.user.UserViewModel
 import com.example.dailytask.user.UserViewModelFactory
-import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter

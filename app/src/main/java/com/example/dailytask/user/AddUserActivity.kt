@@ -98,9 +98,9 @@ class AddUserActivity : AppCompatActivity() {
                                 val userName = binding.username.text
                                 var password = ""
                                 if (role == "Client") {
-                                    password = userName.toString() + "123C"
+                                    password = userName.toString() + "123c"
                                 } else {
-                                    password = userName.toString() + "123A"
+                                    password = userName.toString() + "123a"
                                 }
                                 viewModel.insert(
                                     User(

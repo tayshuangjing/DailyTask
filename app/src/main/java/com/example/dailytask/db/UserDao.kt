@@ -22,6 +22,9 @@ interface UserDao {
     @Query("SELECT * FROM user_table WHERE userId = :userId")
     fun getUserByID(userId: String): Flow<User?>
 
+    @Query("SELECT userId FROM user_table WHERE username = :username")
+    fun getUserIdByUsername(username: String): String?
+
     @Query("SELECT userId FROM user_table WHERE role = :role ORDER BY userId DESC LIMIT 1")
     fun getLastUserIdByRole(role: String): String?
 

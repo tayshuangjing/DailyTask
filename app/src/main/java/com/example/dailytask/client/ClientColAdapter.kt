@@ -24,7 +24,7 @@ class ClientColAdapter(private val usersList: List<String>, private val clickLis
 class CollaboratorViewHolder(val binding: ListItemCollaboratorBinding): RecyclerView.ViewHolder(binding.root){
     fun bind(user: String, clickListener: (String) -> Unit) {
         binding.tvCollaborator.text = user
-        binding.btDelete.setOnClickListener {
+        binding.btnDelete.setOnClickListener {
             clickListener(user)
         }
     }

@@ -107,14 +107,14 @@ class AdminMainActivity : AppCompatActivity() {
     }
 
     private fun displayTaskList(username: String) {
-//        taskViewModel.getAllTasks().observe(this, Observer {task ->
-//            adapter.updateList(task)
-//            Log.d("Task", task.toString())
-//        })
-        taskViewModel.getTaskByUser(username).observe(this, Observer {
-            task -> adapter.updateList(task)
+        taskViewModel.getAllTasks().observe(this, Observer {task ->
+            adapter.updateList(task)
             Log.d("Task", task.toString())
         })
+//        taskViewModel.getTaskByUser(username).observe(this, Observer {
+//            task -> adapter.updateList(task)
+//            Log.d("Task", task.toString())
+//        })
     }
 
     private fun listItemClicked(taskId: Task) {
