@@ -7,9 +7,7 @@ import android.os.Bundle
 import android.text.InputType
 import android.util.Log
 import android.widget.ArrayAdapter
-import android.widget.DatePicker
 import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
@@ -20,7 +18,6 @@ import com.example.dailytask.db.TaskRepository
 import com.example.dailytask.db.UserRepository
 import com.example.dailytask.user.UserViewModel
 import com.example.dailytask.user.UserViewModelFactory
-import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -32,13 +29,15 @@ class ClientAddActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddClientBinding
     private lateinit var clientTaskViewModel: ClientTaskViewModel
     private lateinit var userViewModel: UserViewModel
-    private lateinit var rvCollaboratorAdapter: ClientColAdapter
-    private lateinit var adapter: ArrayAdapter<String>
-    private lateinit var existingNames: MutableList<String>
-    private lateinit var rvNames: MutableList<String>
+//    private lateinit var rvCollaboratorAdapter: ClientColAdapter
+//    private lateinit var adapter: ArrayAdapter<String>
+//    private lateinit var existingNames: MutableList<String>
+//    private lateinit var rvNames: MutableList<String>
     private val calendar = Calendar.getInstance()
     private var date = LocalDateTime.now()
     private lateinit var userId: String
+
+    private val rvNames = mutableListOf("John", "Jane", "Alice", "Bob", "Charlie")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,9 +54,9 @@ class ClientAddActivity : AppCompatActivity() {
         userId = intent.getStringExtra("userId").toString()
         Log.d("useridadd", userId)
         //init recycler view
-        rvNames = mutableListOf()
-        existingNames = mutableListOf()
-        initRecyclerView()
+//        rvNames = mutableListOf()
+//        existingNames = mutableListOf()
+//        initRecyclerView()
 
         //init calendar view
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.getDefault())
@@ -70,19 +69,19 @@ class ClientAddActivity : AppCompatActivity() {
 
         //init autocomplete text view
         //        existingNames = clientTaskViewModel.existingNames
-        userViewModel.getAllUsers().observe(this) { list ->
-            existingNames = list.map { it.username }.toMutableList()
-            adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, existingNames)
-            binding.etCol.setAdapter(adapter)
-        }
-        binding.etCol.setOnItemClickListener { _, _, position, _ ->
-            val selectedName = adapter.getItem(position).toString()
-            rvNames.add(selectedName)
-            existingNames.remove(selectedName)
-            adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, existingNames)
-            binding.etCol.setAdapter(adapter)
-            rvCollaboratorAdapter.notifyDataSetChanged()
-        }
+//        userViewModel.getAllUsers().observe(this) { list ->
+//            existingNames = list.map { it.username }.toMutableList()
+//            adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, existingNames)
+//            binding.etCol.setAdapter(adapter)
+//        }
+//        binding.etCol.setOnItemClickListener { _, _, position, _ ->
+//            val selectedName = adapter.getItem(position).toString()
+//            rvNames.add(selectedName)
+//            existingNames.remove(selectedName)
+//            adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, existingNames)
+//            binding.etCol.setAdapter(adapter)
+//            rvCollaboratorAdapter.notifyDataSetChanged()
+//        }
 
         binding.btSave.setOnClickListener {
             save()
@@ -115,15 +114,15 @@ class ClientAddActivity : AppCompatActivity() {
         dialogPickerDialog.show()
     }
 
-    private fun initRecyclerView() {
-        rvCollaboratorAdapter = ClientColAdapter(rvNames, {selectedItem: String -> listItemClicked(selectedItem)})
-        binding.rvCollaborator.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        binding.rvCollaborator.adapter = rvCollaboratorAdapter
-    }
+//    private fun initRecyclerView() {
+//        rvCollaboratorAdapter = ClientColAdapter(rvNames, {selectedItem: String -> listItemClicked(selectedItem)})
+//        binding.rvCollaborator.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+//        binding.rvCollaborator.adapter = rvCollaboratorAdapter
+//    }
 
     private fun save() {
         binding.apply {
-            if (!etTitle.text.isEmpty() && !etContent.text.isEmpty() && !rvNames.isEmpty()){
+            if (!etTitle.text.isEmpty() && !etContent.text.isEmpty()){
                 val userInputTitle = etTitle.text.toString()
                 val userInputContent = etContent.text.toString()
 //                val userInputName = etName.text.toString()
@@ -152,11 +151,11 @@ class ClientAddActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun listItemClicked(selectedItem: String) {
-        rvNames.remove(selectedItem)
-        existingNames.add(selectedItem)
-        adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, existingNames)
-        binding.etCol.setAdapter(adapter)
-        rvCollaboratorAdapter.notifyDataSetChanged()
-    }
+//    private fun listItemClicked(selectedItem: String) {
+//        rvNames.remove(selectedItem)
+//        existingNames.add(selectedItem)
+//        adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, existingNames)
+//        binding.etCol.setAdapter(adapter)
+//        rvCollaboratorAdapter.notifyDataSetChanged()
+//    }
 }

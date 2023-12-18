@@ -19,6 +19,7 @@ class ClientMainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainClientBinding
     private lateinit var clientTaskViewModel: ClientTaskViewModel
     private lateinit var adapter: MyRecyclerViewAdapter
+    private lateinit var sharedPreferencesHelper: SharedPreferencesHelper
     private var userId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +31,8 @@ class ClientMainActivity : AppCompatActivity() {
         val database = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "task_database").build()
         val repository = TaskRepository(database.taskDao())
         clientTaskViewModel = ViewModelProvider(this, ClientTaskViewModelFactory(repository)).get(ClientTaskViewModel::class.java)
+
+        sharedPreferencesHelper = SharedPreferencesHelper(this)
 
         initRecyclerView()
 
@@ -51,10 +54,18 @@ class ClientMainActivity : AppCompatActivity() {
     }
 
     private fun displayTask() {
-        clientTaskViewModel.getAllTasks().observe(this, Observer {
-            adapter.setList(it)
-            adapter.notifyDataSetChanged()
-        })
+//        clientTaskViewModel.getAllTasks().observe(this, Observer {
+//            adapter.setList(it)
+//            adapter.notifyDataSetChanged()
+//        })
+//        val username = sharedPreferencesHelper.username
+        val username = "qwe"
+        if (username != null) {
+            clientTaskViewModel.getTasksByUsername(username).observe(this, Observer {
+                adapter.setList(it)
+                adapter.notifyDataSetChanged()
+            })
+        }
     }
 
     private fun listItemClicked(task: Task) {
