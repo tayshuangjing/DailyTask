@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var userViewModel: UserViewModel
     private lateinit var repository: UserRepository
+    private var userID: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -49,7 +50,9 @@ class MainActivity : AppCompatActivity() {
                 val password = binding.password.text.toString()
                 Log.d("User", "$name $password")
                 lifecycleScope.launch {
-                    val matchName = userViewModel.getUserByID(name).firstOrNull()
+                    userID = userViewModel.getUserIdByUsername(name).toString()
+                    Log.d("userID", userID)
+                    val matchName = userViewModel.getUserByID(userID).firstOrNull()
                     Log.d("Match user", matchName.toString())
                     if(matchName!=null){
                         if(matchName.password == password){
@@ -57,11 +60,11 @@ class MainActivity : AppCompatActivity() {
                             binding.password.text.clear()
                             when(matchName.role){
                                 "Admin" -> {
-                                    adminIntent.putExtra("userId", name)
+                                    adminIntent.putExtra("userId", userID)
                                     startActivity(adminIntent)
                                 }
                                 "Client" -> {
-                                    clientIntent.putExtra("userId", name)
+                                    clientIntent.putExtra("userId", userID)
                                     startActivity(clientIntent)
                                 }
                                 else -> Toast.makeText(this@MainActivity,"Invalid Role", Toast.LENGTH_SHORT).show()

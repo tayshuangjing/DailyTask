@@ -39,6 +39,10 @@ class UserViewModel(private val repository: UserRepository): ViewModel(){
         return repository.getUserByID(userId)
     }
 
+    fun getUserIdByUsername(username:String): String? {
+        return repository.getUserIdByUsername(username)
+    }
+
     fun getLastUserIdByRole(role: String): LiveData<String?> {
         val result = MutableLiveData<String?>()
         viewModelScope.launch {
