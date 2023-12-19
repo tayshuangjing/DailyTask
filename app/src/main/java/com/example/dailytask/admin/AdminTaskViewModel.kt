@@ -35,6 +35,12 @@ class AdminTaskViewModel(private val repository: TaskRepository): ViewModel() {
         }
     }
 
+    fun updateTaskStatus(taskId: Int, newStatus: String){
+        viewModelScope.launch {
+            repository.updateTaskStatus(taskId, newStatus)
+        }
+    }
+
     fun getTaskByUser(username: String): LiveData<List<Task>> {
         return repository.getTasksForUser(username)
     }
@@ -54,14 +60,14 @@ class AdminTaskViewModel(private val repository: TaskRepository): ViewModel() {
                 }
             }
         }
-
     }
 
-    fun updateTaskStatus(taskId: Int, newStatus: String){
+    fun updateTaskCollaborators(taskId: Int, collaborators: List<String>) {
         viewModelScope.launch {
-            repository.updateTaskStatus(taskId, newStatus)
+            repository.updateTaskCollaborators(taskId, collaborators)
         }
     }
+
 }
 
 class AdminTaskViewModelFactory(private val repository: TaskRepository): ViewModelProvider.Factory{

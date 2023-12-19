@@ -30,11 +30,11 @@ class UserRepository(private val userDao: UserDao) {
         return userDao.getUserIdByUsername(username)
     }
 
-suspend fun getLastUserIdByRole(role: String): String? {
-            return withContext(Dispatchers.IO) {
-                userDao.getLastUserIdByRole(role)
-            }
+    suspend fun getLastUserIdByRole(role: String): String? {
+        return withContext(Dispatchers.IO) {
+            userDao.getLastUserIdByRole(role)
         }
+    }
 
 
 }
