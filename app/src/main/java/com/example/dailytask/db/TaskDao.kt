@@ -37,4 +37,7 @@ interface TaskDao {
 //    fun getTasksByUsername(username: String): Flow<List<Task>>
     @Query("SELECT * FROM task_table WHERE userId = :userId")
     fun getTasksByUserId(userId: String): Flow<List<Task>>
+
+    @Query("SELECT * FROM task_table JOIN user_table ON user_table.userId = task_table.userId WHERE username = :username")
+    fun getTasksByUsername(username: String): Flow<List<Task>>
 }

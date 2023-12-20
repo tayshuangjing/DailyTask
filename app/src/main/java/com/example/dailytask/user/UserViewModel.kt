@@ -27,6 +27,14 @@ class UserViewModel(private val repository: UserRepository): ViewModel(){
             repository.insert(user)
         }
 
+    fun delete(user: User) = viewModelScope.launch {
+        val deleteUser = repository.delete(user)
+        if(deleteUser > 0){
+            Log.d("Delete successful", deleteUser.toString())
+        }else{
+            Log.d("Error", "Error Occurred")
+        }
+    }
 
     fun getAllUsers() = liveData {
         user.collect{
@@ -52,16 +60,6 @@ class UserViewModel(private val repository: UserRepository): ViewModel(){
             }
         }
         return result
-    }
-
-
-    fun delete(user: User) = viewModelScope.launch {
-        val deleteUser = repository.delete(user)
-        if(deleteUser > 0){
-            Log.d("Delete successful", deleteUser.toString())
-        }else{
-            Log.d("Error", "Error Occurred")
-        }
     }
 }
 

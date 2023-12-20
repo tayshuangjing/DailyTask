@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
+import com.example.dailytask.MainActivity
 import com.example.dailytask.R
 import com.example.dailytask.databinding.ActivityMainAdminBinding
 import com.example.dailytask.db.Task
@@ -97,6 +98,12 @@ class AdminMainActivity : AppCompatActivity() {
                 return true
             }
         })
+
+        binding.btnLogout.setOnClickListener{
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
     private fun initRecyclerView(username: String) {
         binding.adminRecyclerView.setHasFixedSize(true)

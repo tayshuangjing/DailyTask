@@ -3,6 +3,7 @@ package com.example.dailytask.db
 import android.util.Log
 import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.onEach
 
 class TaskRepository(private val taskDao: TaskDao) {
@@ -40,4 +41,19 @@ class TaskRepository(private val taskDao: TaskDao) {
     fun getTasksByUserId(userId: String): Flow<List<Task>> {
         return taskDao.getTasksByUserId(userId)
     }
+
+    fun getTasksByUsername(username: String): Flow<List<Task>> {
+        return taskDao.getTasksByUsername(username)
+    }
+
+    suspend fun updateTaskCollaborators(taskId: Int, collaborators: List<String>) {
+        val task = getTaskById(taskId).firstOrNull()
+
+        // Update the collaborators
+        task?.let {
+            it.collaborator = collaborators.toMutableList()
+            taskDao.update(it)
+        }
+    }
+
 }

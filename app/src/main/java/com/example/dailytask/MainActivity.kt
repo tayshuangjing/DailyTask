@@ -21,8 +21,10 @@ import com.example.dailytask.db.UserRepository
 import com.example.dailytask.user.AddUserActivity
 import com.example.dailytask.user.UserViewModel
 import com.example.dailytask.user.UserViewModelFactory
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
 
@@ -55,11 +57,10 @@ class MainActivity : AppCompatActivity() {
                 val password = binding.password.text.toString()
                 Log.d("User", "$name $password")
                 lifecycleScope.launch {
-                    Thread{
-                        userID = userViewModel.getUserIdByUsername(name).toString()
-                        Log.d("userID", userID)
-                    }.start()
-
+                    val userID = withContext(Dispatchers.IO) {
+                        userViewModel.getUserIdByUsername(name).toString()
+                    }
+                    Log.d("userID", userID)
                     val matchName = userViewModel.getUserByID(userID).firstOrNull()
                     Log.d("Match user", matchName.toString())
                     if(matchName!=null){

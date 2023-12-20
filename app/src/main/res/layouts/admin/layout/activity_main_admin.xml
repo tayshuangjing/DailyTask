@@ -22,10 +22,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/daily_task_scheduler"
-            android:textSize="36sp"
+            android:textSize="34sp"
             android:textColor="@color/white"
             android:textStyle="bold"
             />
+
+        <ImageButton
+        android:id="@+id/btnLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:padding="20dp"
+        app:srcCompat="@drawable/baseline_logout_24"
+        android:background="@color/blue_700" />
 
     </androidx.appcompat.widget.Toolbar>
 

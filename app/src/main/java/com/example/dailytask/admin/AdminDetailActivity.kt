@@ -19,6 +19,7 @@ import com.example.dailytask.db.TaskRepository
 import com.example.dailytask.db.UserRepository
 import com.example.dailytask.user.UserViewModel
 import com.example.dailytask.user.UserViewModelFactory
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
@@ -28,10 +29,12 @@ class AdminDetailActivity : AppCompatActivity() {
     private lateinit var userRepository: UserRepository
     private lateinit var taskViewModel: AdminTaskViewModel
     private lateinit var userViewModel: UserViewModel
-    private lateinit var spinner: Spinner
-//    private lateinit var adapter: ArrayAdapter<String>
-//    private lateinit var existingNames: MutableList<String>
-//    private lateinit var rvNames: MutableList<String>
+    private lateinit var spinnerOption: Spinner
+    private lateinit var spinnerTeam: Spinner
+    private lateinit var rvNames: MutableList<String>
+    private lateinit var existingNames: MutableList<String>
+    private lateinit var adapter: ArrayAdapter<String>
+    private lateinit var adminColAdapter: AdminColAdapter
 
     private var taskId: Int = 0
     private var userId: String = ""
@@ -44,74 +47,64 @@ class AdminDetailActivity : AppCompatActivity() {
 
         val taskDao = AppDatabase.getDatabase(application).taskDao()
         taskRepository = TaskRepository(taskDao)
-        taskViewModel = ViewModelProvider(this, AdminTaskViewModelFactory(taskRepository)).get(
-            AdminTaskViewModel::class.java
-        )
-
+        taskViewModel = ViewModelProvider(this, AdminTaskViewModelFactory(taskRepository))
+            .get(AdminTaskViewModel::class.java)
 
         val userDao = AppDatabase.getDatabase(application).userDao()
         userRepository = UserRepository(userDao)
-        userViewModel = ViewModelProvider(
-            this,
-            UserViewModelFactory(userRepository)
-        ).get(UserViewModel::class.java)
-
+        userViewModel = ViewModelProvider(this, UserViewModelFactory(userRepository))
+            .get(UserViewModel::class.java)
 
         taskId = intent.getIntExtra("taskId", 0)
         userId = intent.getStringExtra("userId").toString()
-        Log.d("TaskDetail", "Received task ID:$taskId")
-        Log.d("TaskDetail", "Received user ID:$userId")
 
-        spinner()
+        initRecyclerView()
+
+        setupTeamSpinner()
+        setupOptionSpinner()
     }
-//
-//        rvNames = mutableListOf()
-//        existingNames = mutableListOf()
-//        initRecyclerView()
-//
-//        userViewModel.getAllUsers().observe(this) { list ->
-//            existingNames = list.map { it.username }.toMutableList()
-//            if (binding.spinnerTeam != null) {
-//                adapter = ArrayAdapter(this@AdminDetailActivity, android.R.layout.simple_spinner_dropdown_item, existingNames)
-//                binding.spinnerTeam.adapter = adapter
-//            }
-//        }
-//
-//        binding.spinnerTeam.onItemSelectedListener = object :
-//            AdapterView.OnItemSelectedListener {
-//            override fun onItemSelected(parent: AdapterView<*>,
-//                                        view: View, position: Int, id: Long) {
-//                val selectedName = parent?.getItemAtPosition(position).toString()
-//                rvNames.add(selectedName)
-//                existingNames.remove(selectedName)
-//                adapter = ArrayAdapter(this@AdminDetailActivity, android.R.layout.simple_spinner_dropdown_item, existingNames)
-//                binding.spinnerTeam.adapter = adapter
-//                rvCollaboratorAdapter.notifyDataSetChanged()
-//            }
-//
-//            override fun onNothingSelected(parent: AdapterView<*>) {
-//                Toast.makeText(applicationContext, "Please select a collaborator.", Toast.LENGTH_LONG).show()
-//            }
-//        }
-//    }
-//
-//    private fun initRecyclerView() {
-//        rvCollaboratorAdapter = AdminColAdapter(rvNames, {selectedItem: String -> listItemClicked(selectedItem)})
-//        binding.rvTeam.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-//        binding.rvTeam.adapter = rvCollaboratorAdapter
-//    }
-//
-//    private fun listItemClicked(selectedItem: String) {
-//        rvNames.remove(selectedItem)
-//        existingNames.add(selectedItem)
-//        adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, existingNames)
-//        binding.spinnerTeam.setAdapter(adapter)
-//        rvCollaboratorAdapter.notifyDataSetChanged()
-//    }
 
-    private fun spinner(){
+    private fun setupTeamSpinner() {
+        val rvNames = mutableListOf<String>()
 
-        spinner = binding.option
+        lifecycleScope.launch {
+            val task = taskViewModel.getTaskById(taskId).firstOrNull()
+            rvNames.clear()
+            rvNames.addAll(task?.collaborator ?: emptyList())
+            Log.d("rvNames", rvNames.toString())
+
+            existingNames = mutableListOf()
+            adapter = ArrayAdapter(
+                this@AdminDetailActivity,
+                android.R.layout.simple_spinner_item,
+                existingNames
+            )
+
+            Log.d("rvNamesOut", rvNames.toString())
+
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.spinnerTeam.adapter = adapter
+
+            userViewModel.getAllUsers().observe(this@AdminDetailActivity) { list ->
+                existingNames.clear()
+                existingNames.addAll(listOf("Select Member"))
+                existingNames.addAll(
+                    list.filter { user ->
+                        user.userId != userId && !rvNames.contains(user.username)
+                    }.mapNotNull { user ->
+                        user.username?.takeIf { username -> username.isNotBlank() }
+                    }
+                )
+
+                adapter.notifyDataSetChanged()
+            }
+
+            binding.spinnerTeam.onItemSelectedListener = createSpinnerItemSelectedListener()
+        }
+    }
+
+    private fun setupOptionSpinner() {
+        spinnerOption = binding.option
 
         lifecycleScope.launch {
             taskViewModel.getTaskById(taskId).collect { task ->
@@ -127,49 +120,107 @@ class AdminDetailActivity : AppCompatActivity() {
                     binding.tvDate.text = task.createDateFormat
                     currentStatus = task.status.toString()
 
-                    ArrayAdapter.createFromResource(
-                        this@AdminDetailActivity,
-                        R.array.task_status,
-                        android.R.layout.simple_spinner_dropdown_item
-                    ).also { adapter ->
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                        spinner.adapter = adapter
-
-                        val position = adapter.getPosition(currentStatus)
-                        spinner.setSelection(position)
-                    }
-
-                    spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(
-                            parent: AdapterView<*>?,
-                            view: View?,
-                            position: Int,
-                            id: Long
-                        ) {
-                            val selectedStatus = parent?.getItemAtPosition(position).toString()
-                            binding.btnDone.setOnClickListener {
-                                taskViewModel.updateTaskStatus(taskId, selectedStatus)
-                                val intent = Intent(
-                                    this@AdminDetailActivity,
-                                    AdminMainActivity::class.java
-                                )
-                                intent.putExtra("userId",userId)
-                                startActivity(intent)
-                                finish()
-                            }
-                        }
-
-                        override fun onNothingSelected(parent: AdapterView<*>?) {
-                            // Handle nothing selected if needed
-                        }
-                    }
+                    setupOptionSpinnerAdapter()
+                    setupOptionSpinnerListener()
                 } else {
                     Log.d("TaskDetail", "Task is null. Starting Error activity.")
-                    val intent = Intent(this@AdminDetailActivity, Error::class.java)
-                    startActivity(intent)
+                    startActivity(Intent(this@AdminDetailActivity, Error::class.java))
                     finish()
                 }
             }
         }
     }
+
+    private fun setupOptionSpinnerAdapter() {
+        ArrayAdapter.createFromResource(
+            this@AdminDetailActivity,
+            R.array.task_status,
+            android.R.layout.simple_spinner_dropdown_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinnerOption.adapter = adapter
+
+            val position = adapter.getPosition(currentStatus)
+            spinnerOption.setSelection(position)
+        }
+    }
+
+    private fun setupOptionSpinnerListener() {
+        spinnerOption.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val selectedStatus = parent?.getItemAtPosition(position).toString()
+                binding.btnDone.setOnClickListener {
+                    taskViewModel.updateTaskStatus(taskId, selectedStatus)
+                    taskViewModel.updateTaskCollaborators(taskId, collaborators = rvNames)
+                    val intent = Intent(this@AdminDetailActivity, AdminMainActivity::class.java)
+                    intent.putExtra("userId", userId)
+                    startActivity(intent)
+                    finish()
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+        }
+    }
+
+    private fun createSpinnerItemSelectedListener() =
+        object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val selectedName = parent?.getItemAtPosition(position).toString()
+                if (selectedName != "Select Member") {
+                    addNameToRecyclerView(selectedName)
+                    removeNameFromSpinner(selectedName)
+                    adapter.notifyDataSetChanged()
+                    binding.spinnerTeam.setSelection(0)
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+            }
+        }
+
+    private fun addNameToRecyclerView(name: String) {
+        rvNames.add(name)
+        adminColAdapter.notifyDataSetChanged()
+    }
+
+    private fun removeNameFromSpinner(name: String) {
+        existingNames.remove(name)
+        adapter.notifyDataSetChanged()
+    }
+
+    private fun initRecyclerView() {
+        lifecycleScope.launch {
+            val task = taskViewModel.getTaskById(taskId).firstOrNull()
+
+            rvNames = task?.collaborator?.toMutableList() ?: mutableListOf()
+
+            adminColAdapter = AdminColAdapter(rvNames) { selectedItem: String ->
+                listItemClicked(selectedItem)
+            }
+
+            binding.rvTeam.layoutManager =
+                LinearLayoutManager(this@AdminDetailActivity, LinearLayoutManager.VERTICAL, false)
+            binding.rvTeam.adapter = adminColAdapter
+        }
+    }
+
+    private fun listItemClicked(selectedItem: String) {
+        if (!rvNames.contains(selectedItem)) {
+            addNameToRecyclerView(selectedItem)
+            removeNameFromSpinner(selectedItem)
+        } else {
+            deleteItemFromRecyclerView(selectedItem)
+        }
+    }
+
+    private fun deleteItemFromRecyclerView(name: String) {
+        rvNames.remove(name)
+        adminColAdapter.notifyDataSetChanged()
+        existingNames.add(name)
+        adapter.notifyDataSetChanged()
+    }
 }
+
+
