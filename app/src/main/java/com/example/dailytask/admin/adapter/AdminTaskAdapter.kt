@@ -1,20 +1,13 @@
-package com.example.dailytask.admin
+package com.example.dailytask.admin.adapter
 
-import android.annotation.SuppressLint
-import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dailytask.R
-import com.example.dailytask.databinding.ActivityMainAdminBinding
 import com.example.dailytask.databinding.ListItemBinding
 import com.example.dailytask.db.Task
-import com.example.dailytask.db.UserRepository
-import kotlinx.coroutines.flow.firstOrNull
 
 
 private val taskList = ArrayList<Task>()

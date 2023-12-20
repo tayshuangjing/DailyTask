@@ -3,25 +3,13 @@ package com.example.dailytask.user
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
-import com.example.dailytask.R
-import com.example.dailytask.admin.AdminTaskViewHolder
-import com.example.dailytask.admin.AdminTaskViewModel
-import com.example.dailytask.admin.AdminTaskViewModelFactory
 import com.example.dailytask.databinding.ActivityDeleteUserBinding
-import com.example.dailytask.databinding.ListItemBinding
-import com.example.dailytask.databinding.ListItemUserBinding
 import com.example.dailytask.db.AppDatabase
-import com.example.dailytask.db.Task
 import com.example.dailytask.db.User
 import com.example.dailytask.db.UserRepository
-import kotlinx.coroutines.flow.collect
 
 
 class DeleteUserActivity : AppCompatActivity() {

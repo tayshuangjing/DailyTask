@@ -8,18 +8,17 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dailytask.R
+import com.example.dailytask.admin.adapter.AdminColAdapter
 import com.example.dailytask.databinding.ActivityDetailAdminBinding
 import com.example.dailytask.db.AppDatabase
 import com.example.dailytask.db.TaskRepository
 import com.example.dailytask.db.UserRepository
 import com.example.dailytask.user.UserViewModel
 import com.example.dailytask.user.UserViewModelFactory
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 

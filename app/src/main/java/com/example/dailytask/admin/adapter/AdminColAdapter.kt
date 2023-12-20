@@ -1,4 +1,4 @@
-package com.example.dailytask.admin
+package com.example.dailytask.admin.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
