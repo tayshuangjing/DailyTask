@@ -36,4 +36,8 @@ class TaskRepository(private val taskDao: TaskDao) {
         Log.d("TaskDao", "Task result: $task")
         }
     }
+
+    fun getTasksByUserId(userId: String): Flow<List<Task>> {
+        return taskDao.getTasksByUserId(userId)
+    }
 }

@@ -40,8 +40,8 @@ class ClientTaskViewModel(private val repository: TaskRepository): ViewModel() {
         return repository.getTaskById(taskId)
     }
 
-    fun getTasksByUsername(username: String) = liveData {
-        repository.getTasksByUsername(username).collect{
+    fun getTasksByUserId(userId: String) = liveData {
+        repository.getTasksByUserId(userId).collect{
             emit(it)
         }
     }
