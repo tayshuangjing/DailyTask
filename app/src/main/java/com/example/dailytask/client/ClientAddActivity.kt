@@ -2,15 +2,19 @@ package com.example.dailytask.client
 
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
+import com.example.dailytask.R
 import com.example.dailytask.databinding.ActivityAddClientBinding
 import com.example.dailytask.db.AppDatabase
 import com.example.dailytask.db.Task
@@ -29,6 +33,7 @@ class ClientAddActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddClientBinding
     private lateinit var clientTaskViewModel: ClientTaskViewModel
     private lateinit var userViewModel: UserViewModel
+    private lateinit var sharedPreferencesHelper: SharedPreferencesHelper
 //    private lateinit var rvCollaboratorAdapter: ClientColAdapter
 //    private lateinit var adapter: ArrayAdapter<String>
 //    private lateinit var existingNames: MutableList<String>
@@ -36,6 +41,7 @@ class ClientAddActivity : AppCompatActivity() {
     private val calendar = Calendar.getInstance()
     private var date = LocalDateTime.now()
     private lateinit var userId: String
+    private var isFileUploaded = false
 
     private val rvNames = mutableListOf("John", "Jane", "Alice", "Bob", "Charlie")
 
@@ -51,6 +57,7 @@ class ClientAddActivity : AppCompatActivity() {
         val userRepository = UserRepository(database.userDao())
         userViewModel = ViewModelProvider(this, UserViewModelFactory(userRepository)).get(UserViewModel::class.java)
 
+        sharedPreferencesHelper = SharedPreferencesHelper(this)
         userId = intent.getStringExtra("userId").toString()
         Log.d("useridadd", userId)
         //init recycler view
@@ -82,6 +89,16 @@ class ClientAddActivity : AppCompatActivity() {
 //            binding.etCol.setAdapter(adapter)
 //            rvCollaboratorAdapter.notifyDataSetChanged()
 //        }
+
+        binding.btUpload.setOnClickListener {
+            isFileUploaded = !isFileUploaded
+            upload()
+        }
+
+        binding.btDelete.setOnClickListener {
+            isFileUploaded = !isFileUploaded
+            upload()
+        }
 
         binding.btSave.setOnClickListener {
             save()
@@ -123,6 +140,7 @@ class ClientAddActivity : AppCompatActivity() {
     private fun save() {
         binding.apply {
             if (!etTitle.text.isEmpty() && !etContent.text.isEmpty()){
+                val userId = sharedPreferencesHelper.userId
                 val userInputTitle = etTitle.text.toString()
                 val userInputContent = etContent.text.toString()
 //                val userInputName = etName.text.toString()
@@ -149,6 +167,20 @@ class ClientAddActivity : AppCompatActivity() {
 
     private fun cancel() {
         finish()
+    }
+
+    private fun upload() {
+        if (isFileUploaded) {
+            binding.tvFileName.text = "FileName.txt"
+            binding.btDelete.visibility = View.VISIBLE
+            binding.btUpload.isClickable = false
+            binding.btUpload.setBackgroundColor(Color.GRAY)
+        } else {
+            binding.tvFileName.text = "No File Uploaded"
+            binding.btDelete.visibility = View.GONE
+            binding.btUpload.isClickable = true
+            binding.btUpload.setBackgroundColor(ContextCompat.getColor(applicationContext, R.color.blue_700))
+        }
     }
 
 //    private fun listItemClicked(selectedItem: String) {

@@ -34,6 +34,7 @@ class ClientUpdateActivity : AppCompatActivity() {
     private lateinit var clientTaskViewModel: ClientTaskViewModel
     private lateinit var userViewModel: UserViewModel
     private lateinit var selectedStatus: String
+    private lateinit var sharedPreferencesHelper: SharedPreferencesHelper
 //    private lateinit var rvCollaboratorAdapter: ClientColAdapter
 //    private lateinit var adapter: ArrayAdapter<String>
 //    private lateinit var rvNames: MutableList<String>
@@ -54,6 +55,8 @@ class ClientUpdateActivity : AppCompatActivity() {
 
         val userRepository = UserRepository(database.userDao())
         userViewModel = ViewModelProvider(this, UserViewModelFactory(userRepository)).get(UserViewModel::class.java)
+
+        sharedPreferencesHelper = SharedPreferencesHelper(this)
 
         val taskId = intent.getIntExtra("task_id", 0)
 //        rvNames = mutableListOf()
@@ -155,6 +158,7 @@ class ClientUpdateActivity : AppCompatActivity() {
         binding.apply {
 //            if (!etTitle.text.isEmpty() && !etContent.text.isEmpty() && !rvNames.isEmpty()){
             if (!etTitle.text.isEmpty() && !etContent.text.isEmpty()){
+                val userId = sharedPreferencesHelper.userId
                 val userInputTitle = etTitle.text.toString()
                 val userInputContent = etContent.text.toString()
 //                val userInputName = etName.text.toString()
@@ -164,7 +168,7 @@ class ClientUpdateActivity : AppCompatActivity() {
                     userInputTitle,
                     userInputContent,
                     userInputDate,
-                    null,
+                    userId,
                     rvNames,
                     selectedStatus))
                 etTitle.text.clear()

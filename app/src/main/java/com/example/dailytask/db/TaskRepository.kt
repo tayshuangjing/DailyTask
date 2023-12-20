@@ -38,6 +38,10 @@ class TaskRepository(private val taskDao: TaskDao) {
         }
     }
 
+    fun getTasksByUserId(userId: String): Flow<List<Task>> {
+        return taskDao.getTasksByUserId(userId)
+    }
+
     fun getTasksByUsername(username: String): Flow<List<Task>> {
         return taskDao.getTasksByUsername(username)
     }

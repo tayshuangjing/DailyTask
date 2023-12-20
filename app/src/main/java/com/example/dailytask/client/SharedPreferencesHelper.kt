@@ -9,13 +9,13 @@ class SharedPreferencesHelper(context: Context) {
     private val editor: SharedPreferences.Editor = sharedPreferences.edit()
 
     companion object {
-        const val USERNAME_KEY = "username"
+        const val USER_ID_KEY = "user_id"
     }
 
-    var username: String?
-        get() = sharedPreferences.getString(USERNAME_KEY, null)
+    var userId: String?
+        get() = sharedPreferences.getString(USER_ID_KEY, null)
         set(value) {
-            editor.putString(USERNAME_KEY, value)
+            editor.putString(USER_ID_KEY, value)
             editor.apply()
         }
 }

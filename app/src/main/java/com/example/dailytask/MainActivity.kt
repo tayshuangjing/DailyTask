@@ -12,6 +12,7 @@ import com.example.dailytask.admin.AdminMainActivity
 import com.example.dailytask.admin.AdminTaskViewModel
 import com.example.dailytask.admin.AdminTaskViewModelFactory
 import com.example.dailytask.client.ClientMainActivity
+import com.example.dailytask.client.SharedPreferencesHelper
 import com.example.dailytask.databinding.ActivityMainBinding
 import com.example.dailytask.db.AppDatabase
 import com.example.dailytask.db.TaskRepository
@@ -30,6 +31,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var userViewModel: UserViewModel
     private lateinit var repository: UserRepository
+    private lateinit var sharedPreferencesHelper: SharedPreferencesHelper
+
     private var userID: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +46,8 @@ class MainActivity : AppCompatActivity() {
                 AppDatabase::class.java, "task_database").build().userDao())
         userViewModel = ViewModelProvider(this, UserViewModelFactory(repository)
         ).get(UserViewModel::class.java)
+
+        sharedPreferencesHelper = SharedPreferencesHelper(this)
 
         binding.btnSubmit.setOnClickListener{
             if(binding.username.text.isNullOrEmpty() || binding.password.text.isNullOrEmpty()){
@@ -68,7 +73,9 @@ class MainActivity : AppCompatActivity() {
                                     startActivity(adminIntent)
                                 }
                                 "Client" -> {
-                                    clientIntent.putExtra("userId", userID)
+                                    Log.d("mytag", "user id: $userID")
+                                    sharedPreferencesHelper.userId = userID
+                                    clientIntent.putExtra("userId", name)
                                     startActivity(clientIntent)
                                 }
                                 else -> Toast.makeText(this@MainActivity,"Invalid Role", Toast.LENGTH_SHORT).show()

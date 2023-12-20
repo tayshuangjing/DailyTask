@@ -58,10 +58,11 @@ class ClientMainActivity : AppCompatActivity() {
 //            adapter.setList(it)
 //            adapter.notifyDataSetChanged()
 //        })
-//        val username = sharedPreferencesHelper.username
-        val username = "qwe"
-        if (username != null) {
-            clientTaskViewModel.getTasksByUsername(username).observe(this, Observer {
+        val userId = sharedPreferencesHelper.userId
+        Log.d("mytag", "user id in client: $userId")
+//        val username = "qwe"
+        if (userId != null) {
+            clientTaskViewModel.getTasksByUserId(userId).observe(this, Observer {
                 adapter.setList(it)
                 adapter.notifyDataSetChanged()
             })
